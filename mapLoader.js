@@ -7,8 +7,6 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
   var image = new Image();
   image.src = photo;
 
-  console.log("Hi");
-
   // store the current location for the image as a google position object
   current = new google.maps.LatLng(lat,lng)
 
