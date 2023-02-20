@@ -1,0 +1,133 @@
+form{
+    border: 2px solid red;
+    border-radius: 4px;
+}
+    
+    body{
+    background-color:#000;
+    padding:20px;
+    margin:0;
+    }
+
+    #container{
+        width:95%;
+        background-color:#000000;
+        margin:10px auto;
+        }
+    
+    
+    header{
+    display:block;
+    width:100%;
+    min-height:fit-content;
+    max-height: max-content;
+    background:#242325;
+    border-radius: 25px; 
+    float: left;
+    margin-bottom: 10px;
+    }
+    
+    header h2{
+    padding:50px 50px 50px 50px;
+    color:#fff;
+    float:left;
+    margin: 0px;
+    font-family: Segoe UI Symbol;
+    }
+    
+    nav{
+    display:block;
+    width:100%;
+    min-height:fit-content;
+    max-height:20px;
+    margin:0;
+    padding: 52px 0px 50px 0px;
+    }
+
+    a{
+    color:#ffffff;
+    font-family: Segoe UI Symbol;
+    text-decoration:none;
+    }
+    
+    
+    ul{ /* style top list */
+    margin:0 auto;
+    padding:0;
+    width:100%;
+    }
+    
+    li{ /* makes all links position in line from left to right */
+    display:inline-block;
+    margin-right:1px;
+    position:relative;
+    }
+    
+    li a{ /* styles text */
+    display:block;
+    min-width:70px;
+    height:30px;
+    text-align:center;
+    line-height:35px;
+    font-family:Segoe UI Symbol;
+    font-weight: bold;
+    color:#fff;
+    text-decoration:none;
+    }
+    
+    li:hover a{
+    background: #5b5959;
+    }
+    
+    li:hover ul a {
+    background:#242325;
+    color:#fff;
+    height:30px;
+    line-height:30px;
+    }
+    
+    li:hover ul a:hover{
+    background:#5b5959;
+    color:#41bef3;
+    }
+    
+    #mid-section{
+    width:100%;
+    background:#242325;
+    border-radius: 25px; 
+    margin-bottom: -5px;
+    margin-top: 10px;
+    }
+
+    
+    
+    footer{
+    display:block;
+    width:100%;
+    min-height: 50px;
+    max-height:50px;
+    background-color:#333;
+    clear:both;
+    border-radius: 25px; 
+
+    }
+    
+    footer p{
+    text-align:center;    
+    color:#fff;
+    padding-top:15px;
+    margin-top:20px;
+    }
+    
+
+    p{
+    color:#ffffff;
+    font-family: Segoe UI Symbol;
+    padding:20px 0px 50px 50px;
+    }
+    
+    .mainText{
+    color:#ffffff;
+    font-family: Segoe UI Symbol;
+    margin:30;
+    }
