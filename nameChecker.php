@@ -9,10 +9,25 @@ $db = 'bitmap';
 $db = new mysqli ('localhost', $user, $pass, $db) or die("unable to connect");
 
 // stores name of the image
-$photoName = $_POST["photoName"];
+$photoName = $_POST["Name"];
 
-// runs a query to check is a photo exists under the current name
-$query = mysqli_query($db, "SELECT * FROM `tblphotos` WHERE PhotoName = '$photoName'");
+$tblName = $_POST["table"];
+
+// searches for photo name
+if ($tblName == 1){
+    $tblName = `tblphotos`;
+    $search = "PhotoName";
+    // runs a query to check if a photo exists under the current name
+    $query = mysqli_query($db, "SELECT * FROM `tblphotos` WHERE PhotoName = '$photoName'");
+}
+
+// searches for username
+else{
+    $tblName = `tblprofiles`;
+    $search = "UserName";
+    // runs a query to check if a username exists under the current name
+    $query = mysqli_query($db, "SELECT * FROM `tblprofiles` WHERE UserName = '$photoName'");
+}
 
 
 // stores the query result
