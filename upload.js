@@ -28,7 +28,7 @@ async function uploadFile(){
     conditionsPromise = await errorCheck(images.value, photoName, lat, long, autoName);
     
     // checks if any errors were found
-    if (conditions != "") {
+    if (conditionsPromise != "") {
         alert(conditionsPromise);
     }
     else
@@ -45,6 +45,7 @@ async function uploadFile(){
 
         // adds uploaded image to form
         formData.append("images", renamed);
+        formData.append("path", "uploads/");
     
         // uses fetch api to submit a php post request
         fetch(endpoint, {
@@ -73,43 +74,47 @@ async function uploadFile(){
 
 // error checking function
 async function errorCheck(photo, name, lat, long, nameCheck){
-        // stores list of errors
-        conditions = []
+    // stores list of errors
+    conditions = []
 
-        // checks if the file is of the correct extenstion
-        var re = /(\.jpg|\.jpeg|\.png|\.JPG|\.JPEG|\.PNG)$/i;
-        if (!re.exec(photo)) {
-            conditions.push("File extension not supported!\nsupported file formats are: JPG, JPEG, PNG.\n");
+    // checks if the file is of the correct extenstion
+    var re = /(\.jpg|\.jpeg|\.png|\.JPG|\.JPEG|\.PNG)$/i;
+    if(photo == "")
+    {
+        conditions.push("Please add a photo.\n");
+    }
+    else if (!re.exec(photo)) {
+        conditions.push("File extension not supported!\nsupported file formats are: JPG, JPEG, PNG.\n");
+    }
+
+    // checks if photo has a location
+    if(lat == null || long == null || !document.getElementById("location").value.includes(nameCheck)){
+        conditions.push("Please add a valid location to your photo.\n");
+    }
+    // checks if the photo has a name
+    if(name == ""){
+        conditions.push("Please add a name to your photo.\n");
+    }
+    else{
+
+        // checks if the name used for the current photo has already been used
+        nameExists = await getName(name, 1);
+        if (nameExists > 0){
+            conditions.push("Name Already Taken, Sorry.\n");
         }
-
-        // checks if photo has a location
-        if(lat == null || long == null || !document.getElementById("location").value.includes(nameCheck)){
-            conditions.push("Please add a valid location to your photo.\n");
-        }
-        // checks if the photo has a name
-        if(name == ""){
-            conditions.push("Please add a name to your photo.\n");
-        }
-        else{
-
-            // checks if the name used for the current photo has already been used
-            nameExists = await getName(name, 1);
-            if (nameExists > 0){
-                conditions.push("Name Already Taken, Sorry.\n");
-            }
-        }
+    }
 
 
-        // !! add login validation and check for photo
+    // !! add login validation and check for photo
 
-        // stores string of errors
-        var conOutput = "";
+    // stores string of errors
+    var conOutput = "";
         
-        // loops through array of errors and adds them to a string
-        for (i in conditions){
-            conOutput = conOutput + conditions[i];
-        }
-        return conOutput;
+    // loops through array of errors and adds them to a string
+    for (i in conditions){
+        conOutput = conOutput + conditions[i];
+    }
+    return conOutput;
 }
 
 // !! need to add user check when profiles are done
