@@ -44,7 +44,7 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
       marker.setAnimation(google.maps.Animation.BOUNCE);
     }
    });
-  
+
   // capitalises the name of the photo
   photoName = photoName.charAt(0).toUpperCase() + photoName.slice(1);
 
@@ -104,7 +104,7 @@ async function initMap() {
 
   // creates a marker for each image object
   for (i in points){
-
+    
     // converts the lat and long strings to floats
     lati = parseFloat(points[i]["Lat"]);
     longi = parseFloat(points[i]["Long"]);

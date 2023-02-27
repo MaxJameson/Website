@@ -3,6 +3,9 @@ const myForm = document.getElementById("myForm");
 const images = document.getElementById("file");
 const inputFields = document.querySelectorAll('input');
 
+console.log(sessionStorage.getItem("user"));
+console.log(sessionStorage.getItem("userID"));
+
 // adds a listener to the submit button
 myForm.addEventListener("submit", e => {
 
@@ -55,13 +58,13 @@ async function uploadFile(){
 
         // !! need to add user check when profiles are done
         // uploads image data to database
-        sqlUpload(photoName,newName,lat, long,1, date);
+        sqlUpload(photoName,newName,lat, long,sessionStorage.getItem("userID"), date);
     
         // provides feedback for the user
         alert("Photo submitted!");
 
         // adds the photo to the map
-        makeMarker(lat, long, ("uploads/" + newName), photoName, "John_Smith", date);
+        makeMarker(lat, long, ("uploads/" + newName), photoName, sessionStorage.getItem("user"), date);
 
         // centers the map on the new marker
         centerMap(lat,long);
@@ -103,9 +106,9 @@ async function errorCheck(photo, name, lat, long, nameCheck){
             conditions.push("Name Already Taken, Sorry.\n");
         }
     }
-
-
-    // !! add login validation and check for photo
+    if(sessionStorage.getItem("userID") == null){
+        conditions.push("Please login to upload a photo");
+    }
 
     // stores string of errors
     var conOutput = "";

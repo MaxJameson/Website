@@ -23,3 +23,7 @@ $date = $_POST["date"];
 
 // runs a query to insert new record
 $query = mysqli_query($db, "INSERT INTO `tblprofiles`(`UserName`,`Password`,`ProfilePicture`,`Bio`,`DateJoined`) VALUES ('$userName','$password','$profilePic','$bio','$date')");
+
+$ID = $db->insert_id;
+
+exit(json_encode($ID));

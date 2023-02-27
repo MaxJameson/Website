@@ -19,14 +19,46 @@ myForm.addEventListener("submit", e => {
 
     }
     else if( file == "signin.html"){
+
         signIn();
-        console.log("Hi");
+
     }
 });
 
 
 // signs user in
-function signIn(){
+async function signIn(){
+    const userName = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+
+    // creates form for post
+    const loginForm = new FormData();
+    loginForm.append('userName',userName);
+    loginForm.append('pass',pass);
+    
+    // posts data to be check by the sql database
+    await fetch('SQLlogin.php',{
+        method: "post",
+        body: loginForm
+    }).then((res) => res.json())
+    .then(response => {
+        details = response;
+    }).catch(error => console.log(error))
+    
+    //!! login validations
+
+    if (Object.keys(details).length == 0){
+        alert("Incorrect username or password, please try again");
+        const inputFields = document.querySelectorAll('input');
+        // clears input fields
+        inputFields.forEach(input => input.value = '');
+    }
+    else{
+        sessionStorage.setItem("user", userName);
+        sessionStorage.setItem("userID", details[0]["UserID"]);
+        document.location.href = "profile.html";
+    }
+
 
 }
 
@@ -74,6 +106,9 @@ async function createAccount(){
 
         // provides feedback for the user
         alert("Account created, welcome to bitmap");
+
+        sessionStorage.setItem("user", userName);
+        document.location.href = "profile.html";
 
         // !! move to homepage or profile page
 
@@ -172,9 +207,11 @@ function accountUploader(userName, password, bio, profilePic){
         method: "post",
         body: sqlForm
     }).then(function(response){
+        console.log(response);
         return response.text();
     }).then(function(text){
         console.log(text);
+        sessionStorage.setItem("userID", text.slice(-2));
     }).catch(function(error){
         console.error(error);
     })   
