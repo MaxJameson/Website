@@ -35,7 +35,7 @@ header{
     margin:auto;
     }
 
-#mid-section{
+.mid-section{
     width:100%;
     background:#242325;
     border-radius: 25px; 
@@ -52,11 +52,21 @@ header{
     border-radius: 25px; 
     }
 
+#profilePic{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+  }
+
+#profileBox{
+    padding-top: 50px;
+}
+
 
 .main{
     color:#ffffff;
     font-family: Segoe UI Symbol;
-    padding:0px 0px 0px 50px;
     text-align: center;
     }
 

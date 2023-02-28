@@ -6,6 +6,7 @@ const inputFields = document.querySelectorAll('input');
 console.log(sessionStorage.getItem("user"));
 console.log(sessionStorage.getItem("userID"));
 
+
 // adds a listener to the submit button
 myForm.addEventListener("submit", e => {
 

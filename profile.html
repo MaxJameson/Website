@@ -36,12 +36,38 @@
 		</header>
 		
 		
-		<div id="mid-section">
+		<div class="mid-section" id="profileBox">
 		
-			<h3 class="headers">Welcome to Your profile</h3>
+			<img src="" alt="Profile picture" id="profilePic">
+			<h3 class="headers" id="profileName"></h3>
             
-			<p class="main">Profile content here</p>
+			<p class="main" id="bio"></p>
+		
+			<h3 class="headers" id="welcomeText">Your map</h3>
+			<div id="map">
+			</div>
 
+
+		</div>
+
+		<div class="mid-section" id="uploadBox">
+		
+			<h3 class="headers">Want to upload a photo?</h3>
+			<form class="form" id="myForm">
+				<input type="file" name="file" id="file">
+				<br>
+				<label class="textLabel" id="box1">
+					<input type="text" name="photoName"  id ="photoName" placeholder=" ">
+					<span class="placeholder">Photo Name </span>
+				</label>
+				<br>
+				<label class="textLabel" id="box2">
+					<input id = "location" type="text" name="location" placeholder=" ">
+					<span class="placeholder">Location taken </span>
+				</label>
+				<br>
+				<button type="submit" name="submit">Submit</button>
+			</form>
 		</div>
 
 
@@ -52,6 +78,11 @@
         </footer>
 	 
 	</div>
+	
+	<script src="SQLgetter.js"></script>
+	<script src="upload.js"></script>
+	<script src="mapLoader.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6E4ampWx9pRu0kZt8RXy6bvzyIgBWp2U&map_ids=2f686051150cc298&libraries=places&callback=initMap"></script>
 	<script src="checkSignIn.js"></script>
 	
 
