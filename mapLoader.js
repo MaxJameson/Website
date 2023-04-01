@@ -132,6 +132,7 @@ async function initMap() {
   document.getElementById("markerToggle").addEventListener("click", toggleMarker);
 
 
+  cluster = new MarkerClusterer(map, mappedMarkers);
   autoComplete = new google.maps.places.Autocomplete(document.getElementById("location"),{fields: ['geometry','name']});
 
 };
@@ -140,9 +141,11 @@ function toggleMarker(){
   for(i in mappedMarkers){
     if(mappedMarkers[i].getVisible() == false){
       mappedMarkers[i].setVisible(true);
+      cluster.setMap(map);
     }
     else{
       mappedMarkers[i].setVisible(false);
+      cluster.setMap(null);
     }
   }
 };
