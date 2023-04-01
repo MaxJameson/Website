@@ -44,12 +44,17 @@ header{
     box-shadow: 5px 5px 10px black;
     }
 
+.Divfilters{
+    display: flex;
+    justify-content: center;
+}
 
 #map{
     height: 60vh;
     width:100%;
     background:#242325;
     border-radius: 25px; 
+    margin-top: 25px;
     }
 
 #profilePic{
@@ -213,6 +218,13 @@ input[type=file], select {
     box-sizing: border-box;
     box-shadow: 5px 5px 10px black;
   }
+
+  .filters{
+    width: 150px;
+    margin: 0;
+    margin-right: 20px;
+  }
+  
 
 
 

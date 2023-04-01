@@ -1,4 +1,5 @@
 let mappedMarkers = [];
+let markerLocations = [];
 
 // creates markers
 function makeMarker(lat, lng, photo, photoName, userName, Date){
@@ -88,6 +89,11 @@ function centerMap(lat, long){
 // creates the map
 async function initMap() {
 	
+
+
+  heatMapper = await google.maps.importLibrary("visualization");
+  //heatMapper = await google.maps.importLibrary("markerclusterer");
+
   // usues the google maps API to create a map
   map = new google.maps.Map(document.getElementById("map"), {
     mapId: "2f686051150cc298",
@@ -97,25 +103,77 @@ async function initMap() {
     mapTypeControl: false,
   });
 
-  // fetches an object of images 
+  // fetches an object of images heatMapper
   points = await getPoints();
-
-  allMarkers = new Array();
 
   // creates a marker for each image object
   for (i in points){
     
+
     // converts the lat and long strings to floats
     lati = parseFloat(points[i]["Lat"]);
     longi = parseFloat(points[i]["Long"]);
 
     // makes a marker for the current image
    makeMarker(lati,longi,points[i]["StoragePath"],points[i]["PhotoName"],points[i]["UserName"],points[i]["Date"]);
+
+   markerLocations.push(new google.maps.LatLng(lati,longi));
   } 
+
+
+  heatmap = new heatMapper.HeatmapLayer({
+    data: markerLocations,
+    map: map
+  });
+  heatmap.setMap(null);
+
+  document.getElementById("heatToggle").addEventListener("click", toggleHeatmap);
+  document.getElementById("heatColour").addEventListener("click", changeGradient);
+  document.getElementById("markerToggle").addEventListener("click", toggleMarker);
+
 
   autoComplete = new google.maps.places.Autocomplete(document.getElementById("location"),{fields: ['geometry','name']});
 
 };
+
+function toggleMarker(){
+  for(i in mappedMarkers){
+    if(mappedMarkers[i].getVisible() == false){
+      mappedMarkers[i].setVisible(true);
+    }
+    else{
+      mappedMarkers[i].setVisible(false);
+    }
+  }
+};
+
+
+
+function toggleHeatmap() {
+  heatmap.setMap(heatmap.getMap() ? null : map);
+};
+
+function changeGradient() {
+  const gradient = [
+    "rgba(0, 255, 255, 0)",
+    "rgba(0, 255, 255, 1)",
+    "rgba(0, 191, 255, 1)",
+    "rgba(0, 127, 255, 1)",
+    "rgba(0, 63, 255, 1)",
+    "rgba(0, 0, 255, 1)",
+    "rgba(0, 0, 223, 1)",
+    "rgba(0, 0, 191, 1)",
+    "rgba(0, 0, 159, 1)",
+    "rgba(0, 0, 127, 1)",
+    "rgba(63, 0, 91, 1)",
+    "rgba(127, 0, 63, 1)",
+    "rgba(191, 0, 31, 1)",
+    "rgba(255, 0, 0, 1)",
+  ];
+
+  heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
+};
+
 
 function getPlace(){
   // stores the current selected location as an object
