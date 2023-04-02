@@ -62,7 +62,7 @@ async function signIn(){
         // logs the user in and stores information in session storageto be used on the profile page
         sessionStorage.setItem("user", userName);
         sessionStorage.setItem("userID", details[0]["UserID"]);
-        sessionStorage.setItem("profilePic", "profilePictures/" + details[0]["ProfilePicture"]);
+        sessionStorage.setItem("profilePic", details[0]["ProfilePicture"]);
         sessionStorage.setItem("bio", details[0]["Bio"]);
         console.log(sessionStorage.getItem("profilePic"));
 

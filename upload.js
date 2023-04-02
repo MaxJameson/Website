@@ -7,15 +7,21 @@ console.log(sessionStorage.getItem("user"));
 console.log(sessionStorage.getItem("userID"));
 
 
-// adds a listener to the submit button
-myForm.addEventListener("submit", e => {
+
+
+// checks if a user has signed in
+if (sessionStorage.length != 0){
+
+    // adds a listener to the submit button
+    myForm.addEventListener("submit", e => {
 
     // prevents the button from carrying out it's usual function
     e.preventDefault();
 
     uploadFile();
 
-});
+    });
+}
 
 
 async function uploadFile(){

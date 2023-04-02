@@ -1,6 +1,12 @@
 let mappedMarkers = [];
 let markerLocations = [];
 
+// stores the name of the current page
+url = document.URL;
+file = url.substring(url.lastIndexOf('/')+1);
+console.log(url);
+
+
 // creates markers
 function makeMarker(lat, lng, photo, photoName, userName, Date){
 
@@ -84,6 +90,13 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
 function centerMap(lat, long){
   coords = new google.maps.LatLng(lat,long);
   map.panTo(coords);
+
+  console.log("file name: " + file);
+
+  if(file != "index.html" && file != "" ){
+    map.setZoom(13);
+  }
+
 }
 
 // creates the map
@@ -115,9 +128,10 @@ async function initMap() {
     longi = parseFloat(points[i]["Long"]);
 
     // makes a marker for the current image
-   makeMarker(lati,longi,points[i]["StoragePath"],points[i]["PhotoName"],points[i]["UserName"],points[i]["Date"]);
+    makeMarker(lati,longi,points[i]["StoragePath"],points[i]["PhotoName"],points[i]["UserName"],points[i]["Date"]);
 
-   markerLocations.push(new google.maps.LatLng(lati,longi));
+    markerLocations.push(new google.maps.LatLng(lati,longi));
+
   } 
 
 
@@ -127,13 +141,16 @@ async function initMap() {
   });
   heatmap.setMap(null);
 
-  document.getElementById("heatToggle").addEventListener("click", toggleHeatmap);
-  document.getElementById("heatColour").addEventListener("click", changeGradient);
-  document.getElementById("markerToggle").addEventListener("click", toggleMarker);
-
+  if (file == "index.html"){
+    document.getElementById("heatToggle").addEventListener("click", toggleHeatmap);
+    document.getElementById("heatColour").addEventListener("click", changeGradient);
+    document.getElementById("markerToggle").addEventListener("click", toggleMarker);
+  }
 
   cluster = new MarkerClusterer(map, mappedMarkers);
   autoComplete = new google.maps.places.Autocomplete(document.getElementById("location"),{fields: ['geometry','name']});
+
+  centerMap(parseFloat(points[0]["Lat"]),parseFloat(points[0]["Long"]))
 
 };
 
