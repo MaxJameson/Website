@@ -14,6 +14,10 @@ async function getPoints() {
         return photoFetch(sessionStorage.getItem("userID"));
 
     }
+    else if(file == "profileViewer.html"){
+            // fetches current profiles photos
+            return photoFetch(sessionStorage.getItem("viewUserID"));
+    }
 
     return photoFetch(" ");
 }

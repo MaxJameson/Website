@@ -1,11 +1,14 @@
+
+
 // checks if a user has signed in
-if (sessionStorage.length == 0){
+if (sessionStorage.getItem("user") == null){
 
     // changes to the sign in page
     document.location.href = "signin.html";
 }
 else{
-
+    
+    console.log(sessionStorage.getItem("user"));
     // loads profile picture
     pictureBox = document.getElementById("profilePic");
     imagePath = sessionStorage.getItem("profilePic");

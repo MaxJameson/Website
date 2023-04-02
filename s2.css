@@ -225,6 +225,12 @@ input[type=file], select {
     margin-right: 20px;
   }
   
+  .infowindow{
+    background-color: #303f9f;
+    width: 100px;
+    margin: 0px;
+    padding: 10px;
+}
 
 
 
@@ -263,6 +269,8 @@ a{
     font-family: Segoe UI Symbol;
     text-decoration:none;
     }
+
+
 
 ul{ /* style top list */
     margin:0 auto;

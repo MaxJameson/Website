@@ -64,6 +64,7 @@ async function signIn(){
         sessionStorage.setItem("userID", details[0]["UserID"]);
         sessionStorage.setItem("profilePic", details[0]["ProfilePicture"]);
         sessionStorage.setItem("bio", details[0]["Bio"]);
+        sessionStorage.setItem("loggedin", true);
 
         // moves user to profile page
         document.location.href = "profile.html";
@@ -124,6 +125,7 @@ async function createAccount(){
         sessionStorage.setItem("user", userName);
         sessionStorage.setItem("profilePic", path);
         sessionStorage.setItem("bio", bio);
+        sessionStorage.setItem("loggedin", true);
         document.location.href = "profile.html";
 
         // !! move to homepage or profile page

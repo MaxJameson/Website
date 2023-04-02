@@ -8,6 +8,7 @@ let markerLocations = [];
 url = document.URL;
 file = url.substring(url.lastIndexOf('/')+1);
 
+var htmltest;
 
 // creates markers
 function makeMarker(lat, lng, photo, photoName, userName, Date){
@@ -61,10 +62,10 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
   // calculates the aspect ratio of the image
   newWidth = aspectRatio(image);
 
-  // creates an info window for the marker
+  // creates an info window for the marker along with a button to access to posting users profile
   const infowindow = new google.maps.InfoWindow({
     content: ('<h3>'+ photoName +'</h3>' +
-              '<p>By: '+userName+'</p>' +
+              '<button class="infowindow" value="'+userName+'" onclick="viewProfile(this.value)">'+ userName+'</button>' +
               '<p>Posted: '+ Date +'</p>' + 
               '<img src="'+photo+'" width="'+newWidth*4+'" height="'+45*4+'">'),
   });
@@ -91,6 +92,28 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
   // adds marker to array of markers
   mappedMarkers.push(marker);
 };
+
+// stores profile detaials to allow a user to view another users profile
+async function viewProfile(name){
+  sessionStorage.setItem("viewName", name);
+
+  // creates form for post
+  const profileForm = new FormData();
+  profileForm.append('userName',name);
+
+  await fetch('SQLfetchProfile.php',{
+    method: "post",
+    body: profileForm
+  }).then((res) => res.json())
+  .then(response => {
+    details = response;
+  }).catch(error => console.log(error))
+
+  sessionStorage.setItem("viewUserID", details[0]["UserID"]);
+  sessionStorage.setItem("viewProfilePic", details[0]["ProfilePicture"]);
+  sessionStorage.setItem("viewBio", details[0]["Bio"]);
+  window.location.replace("profileViewer.html");
+}
 
 // centers the map on a specific location
 function centerMap(lat, long){

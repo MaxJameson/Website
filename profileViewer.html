@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="eng">
+
+<head>
+
+    <title>bitMap - profile</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="bitMap - profile page." />
+    <meta name="keywords" content="bitMap,map,photos,photography,world,earth,view" />
+	<meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Allows responsvie web page -->
+	<link rel="stylesheet" href="s2.css">
+	<script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
+	</script>
+	
+</head>
+
+<body>
+
+	<div id="container">
+	
+		<!-- header -->
+		<header>
+		
+			<h2 class="title"><a href="index.html">bitMap</a></h2>
+			
+			<!-- nav bar-->
+			<nav>
+		
+				<ul id="menu">
+					<li><a href="index.html">Home</a></li>
+				</ul>
+			
+			</nav>
+			
+		</header>
+		
+		
+		<div class="mid-section" id="profileBox">
+		
+			<img src="" alt="Profile picture" id="profilePic">
+			<h3 class="headers" id="profileName"></h3>
+            
+			<p class="main" id="bio"></p>
+		
+			<h3 class="headers" id="welcomeText">Take a look at their map</h3>
+			<div id="map">
+			</div>
+
+
+		</div>
+        <footer>
+			
+            <p> Copyright&copy; bitMap - 2021 - All rights reserved </p>
+            
+        </footer>
+	 
+	</div>
+	
+    <script src="showProfile.js"></script>
+	<script src="SQLgetter.js"></script>
+	<script src="mapLoader.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6E4ampWx9pRu0kZt8RXy6bvzyIgBWp2U&map_ids=2f686051150cc298&libraries=places&callback=initMap"></script>
+	
+
+</body>
+
+</html>
