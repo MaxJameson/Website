@@ -1,10 +1,12 @@
+// stores array of markers
 let mappedMarkers = [];
+
+// stores array of locations
 let markerLocations = [];
 
 // stores the name of the current page
 url = document.URL;
 file = url.substring(url.lastIndexOf('/')+1);
-console.log(url);
 
 
 // creates markers
@@ -47,7 +49,8 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
     // makes the marker bounce if selected
     if (marker.getAnimation() !== null) {
       marker.setAnimation(null);
-    } else {
+    } 
+    else {
       marker.setAnimation(google.maps.Animation.BOUNCE);
     }
    });
@@ -77,22 +80,26 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
   image.onload = function(){
     // calculates the scaled width of the photo
     newWidth = aspectRatio(image);
+
+    // sets marker image
     marker.setIcon({url: photo, scaledSize: new google.maps.Size((newWidth),(45))});
     marker.setVisible(true);
     marker.setAnimation(google.maps.Animation.DROP);
    
   };
 
+  // adds marker to array of markers
   mappedMarkers.push(marker);
 };
 
 // centers the map on a specific location
 function centerMap(lat, long){
+
+  // sets location of the map to the first marker from the array of markers
   coords = new google.maps.LatLng(lat,long);
   map.panTo(coords);
-
-  console.log("file name: " + file);
-
+  
+  // allows the map to zoom in on a specific point on profile pages
   if(file != "index.html" && file != "" ){
     map.setZoom(13);
   }
@@ -102,10 +109,9 @@ function centerMap(lat, long){
 // creates the map
 async function initMap() {
 	
-
-
+  // calls library used to generate heatmaps
   heatMapper = await google.maps.importLibrary("visualization");
-  //heatMapper = await google.maps.importLibrary("markerclusterer");
+
 
   // usues the google maps API to create a map
   map = new google.maps.Map(document.getElementById("map"), {
@@ -122,7 +128,6 @@ async function initMap() {
   // creates a marker for each image object
   for (i in points){
     
-
     // converts the lat and long strings to floats
     lati = parseFloat(points[i]["Lat"]);
     longi = parseFloat(points[i]["Long"]);
@@ -130,61 +135,69 @@ async function initMap() {
     // makes a marker for the current image
     makeMarker(lati,longi,points[i]["StoragePath"],points[i]["PhotoName"],points[i]["UserName"],points[i]["Date"]);
 
+    // stores raw location of a marker
     markerLocations.push(new google.maps.LatLng(lati,longi));
 
   } 
 
-
-  heatmap = new heatMapper.HeatmapLayer({
-    data: markerLocations,
-    map: map
-  });
-  heatmap.setMap(null);
-
-  if (file == "index.html" || file == ""){
-    //document.getElementById("heatColour").addEventListener("click", changeGradient);
-    document.getElementById("markerToggle").addEventListener("click", toggleMarker);
-  }
-
-  document.getElementById("heatColour").style.backgroundColor= '#808080';
-
+  // creates cluster manager to cluster marker
   cluster = new MarkerClusterer(map, mappedMarkers);
+
+  // creates auto complete object to take input from location field
   autoComplete = new google.maps.places.Autocomplete(document.getElementById("location"),{fields: ['geometry','name']});
 
-  centerMap(parseFloat(points[0]["Lat"]),parseFloat(points[0]["Long"]))
+  // loads homepage specific features
+  if (file == "index.html" || file == ""){
+
+    // creats heatmap of points
+    heatmap = new heatMapper.HeatmapLayer({data: markerLocations, map: map});
+
+    // displays heatmap to prevent overlap with markers
+    heatmap.setMap(null);
+
+    // sets filters to correct options
+    markerToggle = document.getElementById("markerToggle");
+    heatColour = document.getElementById("heatColour")
+    markerToggle.addEventListener("click", toggleMarker);
+    document.getElementById("heatColour").style.backgroundColor= '#808080';
+  }
+
+  // centers the map on first marker in array
+  centerMap(parseFloat(points[0]["Lat"]),parseFloat(points[0]["Long"]));
 
 };
 
+// switches between heatmap and markers
 function toggleMarker(){
+  // loops through markers
   for(i in mappedMarkers){
+
+    // enables marker system
     if(mappedMarkers[i].getVisible() == false){
       mappedMarkers[i].setVisible(true);
       cluster.setMap(map);
       heatmap.setMap(null);
-      document.getElementById("heatColour").style.backgroundColor= '#808080';
-      document.getElementById("heatColour").style.cursor= 'context-menu';
-      document.getElementById("heatColour").removeEventListener("click", changeGradient);
-      document.getElementById("markerToggle").innerText= 'Toggle Heatmap';
+      heatColour.style.backgroundColor= '#808080';
+      heatColour.style.cursor= 'context-menu';
+      heatColour.removeEventListener("click", changeGradient);
+      markerToggle.innerText= 'Toggle Heatmap';
     }
+
+    // enables heatmap system
     else{
       mappedMarkers[i].setVisible(false);
       cluster.setMap(null);
       heatmap.setMap(map);
-      document.getElementById("heatColour").style.backgroundColor= '#303f9f';
-      document.getElementById("heatColour").style.cursor= 'pointer';
-      document.getElementById("heatColour").addEventListener("click", changeGradient);
-      document.getElementById("markerToggle").innerText= 'Toggle Markers';
+      heatColour.style.backgroundColor= '#303f9f';
+      heatColour.style.cursor= 'pointer';
+      heatColour.addEventListener("click", changeGradient);
+      markerToggle.innerText= 'Toggle Markers';
       
     }
   }
 };
 
-
-
-function toggleHeatmap() {
-  heatmap.setMap(heatmap.getMap() ? null : map);
-};
-
+// changes colour of heatmap
 function changeGradient() {
   const gradient = [
     "rgba(0, 255, 255, 0)",
@@ -203,6 +216,7 @@ function changeGradient() {
     "rgba(255, 0, 0, 1)",
   ];
 
+  // sets heatmap colours
   heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
 };
 

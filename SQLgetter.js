@@ -6,7 +6,6 @@ async function getPoints() {
     // stores the name of the current page
     url = document.URL;
     file = url.substring(url.lastIndexOf('/')+1);
-    console.log(file);
 
     // checks if the user is on their profile page
     if(file == "profile.html"){

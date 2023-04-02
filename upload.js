@@ -3,12 +3,6 @@ const myForm = document.getElementById("myForm");
 const images = document.getElementById("file");
 const inputFields = document.querySelectorAll('input');
 
-console.log(sessionStorage.getItem("user"));
-console.log(sessionStorage.getItem("userID"));
-
-
-
-
 // checks if a user has signed in
 if (sessionStorage.length != 0){
 
@@ -157,27 +151,5 @@ function sqlUpload(name,fileName, lat, long, ID, date){
     }).catch(function(error){
         console.error(error);
     })
-
-}
-
-// checks name of photo is valid
-async function getName(name, tbl) {
-
-    // creates form for post
-    const nameForm = new FormData();
-    nameForm.append('Name',name);
-    nameForm.append('table',tbl);
-
-    // posts data to be check by the sql database
-    await fetch('nameChecker.php',{
-        method: "post",
-        body: nameForm
-    }).then((res) => res.json())
-    .then(response => {
-        photos = response;
-    }).catch(error => console.log(error)) 
-
-    // returns query reponse
-    return Object.keys(photos).length;
 
 }

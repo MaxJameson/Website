@@ -5,8 +5,8 @@ const inputFields = document.querySelectorAll('input');
 // stores the name of the current page
 url = document.URL;
 file = url.substring(url.lastIndexOf('/')+1);
-console.log(url);
 
+// adds event listener to the uploader form
 myForm.addEventListener("submit", e => {
 
     //prevents the button from carrying out it's usual function
@@ -64,7 +64,6 @@ async function signIn(){
         sessionStorage.setItem("userID", details[0]["UserID"]);
         sessionStorage.setItem("profilePic", details[0]["ProfilePicture"]);
         sessionStorage.setItem("bio", details[0]["Bio"]);
-        console.log(sessionStorage.getItem("profilePic"));
 
         // moves user to profile page
         document.location.href = "profile.html";
@@ -94,7 +93,6 @@ async function createAccount(){
         
         // converts the file name to image name defined by the user
         split = image.files[0].name.split('.');
-        console.log("2");
         exec = split.pop();
         newName = userName + '.' + exec;
         const renamed = new File([image.files[0]], newName);
@@ -134,29 +132,7 @@ async function createAccount(){
 
 }
 
-
-// checks name of userName is valid
-async function checkName(name, tbl) {
-
-    // creates form for post
-    const nameForm = new FormData();
-    nameForm.append('Name',name);
-    nameForm.append('table',tbl);
-
-    // posts data to be checked by the sql database
-    await fetch('nameChecker.php',{
-        method: "post",
-        body: nameForm
-    }).then((res) => res.json())
-    .then(response => {
-        rep = response;
-    }).catch(error => console.log(error)) 
-
-    // returns query reponse
-    return Object.keys(rep).length;
-
-}
-
+// checks if account information is valid
 async function checkCreation (userName, pass, bio, image){
 
     // stores list of errors
@@ -169,7 +145,7 @@ async function checkCreation (userName, pass, bio, image){
     else{
         
         // checks if the username already exists
-        nameExists = await checkName(userName, 2);
+        nameExists = await getName(userName, 2);
         if (nameExists > 0){
             conditions.push("Username Already Taken, Sorry.\n");
         }
@@ -205,6 +181,7 @@ async function checkCreation (userName, pass, bio, image){
     return conOutput;
 }
 
+//uploads account to database
 function accountUploader(userName, password, bio, path){
     // stores current date
     date = new Date().toJSON().slice(0, 10);    
