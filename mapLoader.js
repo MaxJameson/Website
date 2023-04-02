@@ -24,8 +24,8 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
     if (mappedMarkers[i].getPosition().equals(current)){
 
       // moves markers location by a small random amount
-      lat += Math.random() * (0.006 - -0.006) + -0.006;
-      lng += Math.random() * (0.006 - -0.006) + -0.006;
+      lat += Math.random() * (0.002 - -0.002) + -0.002;
+      lng += Math.random() * (0.002 - -0.002) + -0.002;
     }
   }
 
@@ -141,11 +141,12 @@ async function initMap() {
   });
   heatmap.setMap(null);
 
-  if (file == "index.html"){
-    document.getElementById("heatToggle").addEventListener("click", toggleHeatmap);
-    document.getElementById("heatColour").addEventListener("click", changeGradient);
+  if (file == "index.html" || file == ""){
+    //document.getElementById("heatColour").addEventListener("click", changeGradient);
     document.getElementById("markerToggle").addEventListener("click", toggleMarker);
   }
+
+  document.getElementById("heatColour").style.backgroundColor= '#808080';
 
   cluster = new MarkerClusterer(map, mappedMarkers);
   autoComplete = new google.maps.places.Autocomplete(document.getElementById("location"),{fields: ['geometry','name']});
@@ -159,10 +160,21 @@ function toggleMarker(){
     if(mappedMarkers[i].getVisible() == false){
       mappedMarkers[i].setVisible(true);
       cluster.setMap(map);
+      heatmap.setMap(null);
+      document.getElementById("heatColour").style.backgroundColor= '#808080';
+      document.getElementById("heatColour").style.cursor= 'context-menu';
+      document.getElementById("heatColour").removeEventListener("click", changeGradient);
+      document.getElementById("markerToggle").innerText= 'Toggle Heatmap';
     }
     else{
       mappedMarkers[i].setVisible(false);
       cluster.setMap(null);
+      heatmap.setMap(map);
+      document.getElementById("heatColour").style.backgroundColor= '#303f9f';
+      document.getElementById("heatColour").style.cursor= 'pointer';
+      document.getElementById("heatColour").addEventListener("click", changeGradient);
+      document.getElementById("markerToggle").innerText= 'Toggle Markers';
+      
     }
   }
 };
