@@ -8,8 +8,8 @@ $db = 'bitmap';
 // estavlishes a connection
 $db = new mysqli ('localhost', $user, $pass, $db) or die("unable to connect");
 
-$userName = $_POST['userName'];
-$password = $_POST['pass'];
+$userName = mysqli_real_escape_string($db,$_POST["userName"]);
+$password = mysqli_real_escape_string($db,$_POST['pass']);
 
 // hashes password with a unique salt
 $password = md5($userName.$password);

@@ -67,7 +67,7 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
     content: ('<button class="infowindow" value="'+userName+'" onclick="viewProfile(this.value)">'+ userName+'</button>' +
               '<h3><a class="infotext">'+ photoName +'</a></h3>' +
               '<h3 class="infotext">Posted: '+ Date +'</h3>' + 
-              '<a href='+photo+' rel="lightbox"><img src="'+photo+'" width="'+newWidth*4+'" height="'+45*4+'"></a>'),
+              '<a href="'+photo+'" rel="lightbox"><img src="'+photo+'" width="'+newWidth*4+'" height="'+45*4+'"></a>'),
   });
 
   // stops the marker bouncing when deselected
@@ -148,20 +148,41 @@ async function initMap() {
   // fetches an object of images heatMapper
   points = await getPoints();
 
-  // creates a marker for each image object
-  for (i in points){
+
+  if(points.length == 0){
+
+    document.getElementById("welcomeText").innerHTML = "You're map has no photos, go down below to upload some!"; 
+  }
+  else{
+    // centers the map on first marker in array
+    centerMap(parseFloat(points[0]["Lat"]),parseFloat(points[0]["Long"]));
+  }
+
+
+
+  // checks if the user has uploaded any photos
+  if(points.length == 0){
     
-    // converts the lat and long strings to floats
-    lati = parseFloat(points[i]["Lat"]);
-    longi = parseFloat(points[i]["Long"]);
+    document.getElementById("welcomeText").innerHTML = "You're map has no photos, go down below to upload some!"; 
+  }
+  else{
 
-    // makes a marker for the current image
-    makeMarker(lati,longi,points[i]["StoragePath"],points[i]["PhotoName"],points[i]["UserName"],points[i]["Date"]);
+    // creates a marker for each image object
+   for (i in points){
+      // converts the lat and long strings to floats
+      lati = parseFloat(points[i]["Lat"]);
+      longi = parseFloat(points[i]["Long"]);
 
-    // stores raw location of a marker
-    markerLocations.push(new google.maps.LatLng(lati,longi));
+      // makes a marker for the current image
+      makeMarker(lati,longi,points[i]["StoragePath"],points[i]["PhotoName"],points[i]["UserName"],points[i]["Date"]);
 
-  } 
+      // stores raw location of a marker
+      markerLocations.push(new google.maps.LatLng(lati,longi));
+
+    } 
+    // centers the map on first marker in array
+    centerMap(parseFloat(points[0]["Lat"]),parseFloat(points[0]["Long"]));
+  }
 
   // creates cluster manager to cluster marker
   cluster = new MarkerClusterer(map, mappedMarkers);
@@ -185,8 +206,7 @@ async function initMap() {
     document.getElementById("heatColour").style.backgroundColor= '#808080';
   }
 
-  // centers the map on first marker in array
-  centerMap(parseFloat(points[0]["Lat"]),parseFloat(points[0]["Long"]));
+
 
 };
 

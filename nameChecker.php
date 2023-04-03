@@ -8,30 +8,32 @@ $db = 'bitmap';
 // estavlishes a connection
 $db = new mysqli ('localhost', $user, $pass, $db) or die("unable to connect");
 
-// stores name of the image
-$photoName = $_POST["Name"];
+// stores name of the item passed into the script
+$itemName = mysqli_real_escape_string($db,$_POST["Name"]);
 
+// stores the name of the table selection 
 $tblName = $_POST["table"];
 
 // searches for photo name
 if ($tblName == 1){
     $tblName = `tblphotos`;
     $search = "PhotoName";
-    // runs a query to check if a photo exists under the current name
-    $query = mysqli_query($db, "SELECT * FROM `tblphotos` WHERE PhotoName = '$photoName'");
+    // saves a query to check if a photo exists under the current name
+    $query =  "SELECT * FROM `tblphotos` WHERE PhotoName = '$itemName'";
 }
 
 // searches for username
 else{
     $tblName = `tblprofiles`;
     $search = "UserName";
-    // runs a query to check if a username exists under the current name
-    $query = mysqli_query($db, "SELECT * FROM `tblprofiles` WHERE UserName = '$photoName'");
+    // saves a query to check if a username exists under the current name
+    $query =  "SELECT * FROM `tblprofiles` WHERE UserName = '$itemName'";
 }
 
-
+// runs query
+$output = mysqli_query($db, $query);
 // stores the query result
-$result = mysqli_fetch_all($query, MYSQLI_ASSOC);
+$result = mysqli_fetch_all($output, MYSQLI_ASSOC);
 
 // returns the result
 exit(json_encode($result));

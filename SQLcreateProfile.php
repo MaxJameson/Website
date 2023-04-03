@@ -13,11 +13,11 @@ $db = new mysqli ('localhost', $user, $pass, $db) or die("unable to connect");
 
 
 // stores data to be uploaded
-$userName = $_POST["userName"];
-$password = $_POST["password"];
-$bio = $_POST["bio"];
-$profilePic = $_POST["profilePic"];
-$date = $_POST["date"];
+$userName = mysqli_real_escape_string($db,$_POST["userName"]);
+$password = mysqli_real_escape_string($db,$_POST["password"]);
+$bio = mysqli_real_escape_string($db,$_POST["bio"]);
+$profilePic = mysqli_real_escape_string($db,$_POST["profilePic"]);
+$date = mysqli_real_escape_string($db,$_POST["date"]);
 
 // hashes password with a unique salt
 $password = md5($userName.$password);
