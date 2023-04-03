@@ -22,6 +22,11 @@ header{
     text-align: center;
     }
 
+.infotext{
+    color:#000000;
+    font-family: Segoe UI Symbol;
+}
+
 .title{
     padding:50px 50px 50px 50px;
     color:#fff;

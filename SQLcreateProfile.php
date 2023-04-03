@@ -19,7 +19,8 @@ $bio = $_POST["bio"];
 $profilePic = $_POST["profilePic"];
 $date = $_POST["date"];
 
-
+// hashes password with a unique salt
+$password = md5($userName.$password);
 
 // runs a query to insert new record
 $query = mysqli_query($db, "INSERT INTO `tblprofiles`(`UserName`,`Password`,`ProfilePicture`,`Bio`,`DateJoined`) VALUES ('$userName','$password','$profilePic','$bio','$date')");

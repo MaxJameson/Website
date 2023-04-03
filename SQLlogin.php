@@ -8,10 +8,13 @@ $db = 'bitmap';
 // estavlishes a connection
 $db = new mysqli ('localhost', $user, $pass, $db) or die("unable to connect");
 
-$name = $_POST['userName'];
-$pass = $_POST['pass'];
+$userName = $_POST['userName'];
+$password = $_POST['pass'];
 
-$query = mysqli_query($db, "SELECT * FROM `tblprofiles` WHERE `UserName` = BINARY '$name' AND `Password` = BINARY '$pass'");
+// hashes password with a unique salt
+$password = md5($userName.$password);
+
+$query = mysqli_query($db, "SELECT * FROM `tblprofiles` WHERE `UserName` = BINARY '$userName' AND `Password` = BINARY '$password'");
 
 // stores the query result
 $result = mysqli_fetch_all($query, MYSQLI_ASSOC);

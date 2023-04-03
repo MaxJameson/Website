@@ -153,9 +153,42 @@ async function checkCreation (userName, pass, bio, image){
         }
     }
 
+    // stores regular expression of test for the password input
+    let strength = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})');
+
+
     // checks if the photo has a name
     if(pass == ""){
         conditions.push("Please add a password.\n");
+    }
+    // checks password strenght
+    else if(!strength.test(pass)){
+
+        // checks individual requirements
+        let pLength = new RegExp('(?=.{6,})');
+        let pCase = new RegExp('(?=.*[a-z])(?=.*[A-Z])');
+        let pDigit = new RegExp('(?=.*[0-9])');
+        let pSpecial = new RegExp('(?=.*[^A-Za-z0-9])');
+
+        // checks password lenght
+        if(!pLength.test(pass)){
+            conditions.push("Password must be a minium of 6 characters long.\n");
+        }
+
+        // checks if password contains upper and lowercase letters
+        if(!pCase.test(pass)){
+            conditions.push("Password must at least 1 captial letter and one lower case letter.\n");
+        }
+
+        // checks if password contains any numbers
+        if(!pDigit.test(pass)){
+            conditions.push("Password must at least 1 number.\n");
+        }
+
+        // checks is pasword contains any symbols
+        if(!pSpecial.test(pass)){
+            conditions.push("Password must at least 1 special character (e.g. ?).\n");
+        }
     }
 
     // checks if the photo has a name

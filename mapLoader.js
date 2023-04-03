@@ -64,10 +64,10 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
 
   // creates an info window for the marker along with a button to access to posting users profile
   const infowindow = new google.maps.InfoWindow({
-    content: ('<h3>'+ photoName +'</h3>' +
-              '<button class="infowindow" value="'+userName+'" onclick="viewProfile(this.value)">'+ userName+'</button>' +
-              '<p>Posted: '+ Date +'</p>' + 
-              '<img src="'+photo+'" width="'+newWidth*4+'" height="'+45*4+'">'),
+    content: ('<button class="infowindow" value="'+userName+'" onclick="viewProfile(this.value)">'+ userName+'</button>' +
+              '<h3><a class="infotext">'+ photoName +'</a></h3>' +
+              '<h3 class="infotext">Posted: '+ Date +'</h3>' + 
+              '<a href='+photo+' rel="lightbox"><img src="'+photo+'" width="'+newWidth*4+'" height="'+45*4+'"></a>'),
   });
 
   // stops the marker bouncing when deselected
