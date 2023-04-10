@@ -10,6 +10,8 @@ file = url.substring(url.lastIndexOf('/')+1);
 
 var htmltest;
 
+var Clusterer;
+
 // creates markers
 function makeMarker(lat, lng, photo, photoName, userName, Date){
 
@@ -126,6 +128,16 @@ function centerMap(lat, long){
   if(file != "index.html" && file != "" ){
     map.setZoom(13);
   }
+  else{
+
+    // sets filters to correct options
+    refresh = document.getElementById("refresh");
+    markerToggle = document.getElementById("markerToggle");
+    heatColour = document.getElementById("heatColour");
+    markerToggle.addEventListener("click", toggleMarker);
+    refresh.addEventListener("click", refreshMarkers);
+    document.getElementById("heatColour").style.backgroundColor= '#808080';
+  }
 
 }
 
@@ -149,66 +161,98 @@ async function initMap() {
   points = await getPoints();
 
 
-  if(points.length == 0){
-
-    document.getElementById("welcomeText").innerHTML = "You're map has no photos, go down below to upload some!"; 
-  }
-  else{
-    // centers the map on first marker in array
-    centerMap(parseFloat(points[0]["Lat"]),parseFloat(points[0]["Long"]));
-  }
-
-
-
   // checks if the user has uploaded any photos
   if(points.length == 0){
     
-    document.getElementById("welcomeText").innerHTML = "You're map has no photos, go down below to upload some!"; 
+    document.getElementByI("welcomeText").innerHTML = "You're map has no photos, go down below to upload some!";
   }
   else{
 
-    // creates a marker for each image object
-   for (i in points){
-      // converts the lat and long strings to floats
-      lati = parseFloat(points[i]["Lat"]);
-      longi = parseFloat(points[i]["Long"]);
+    // runs functions to create a group of markers
+    markerManager();
 
-      // makes a marker for the current image
-      makeMarker(lati,longi,points[i]["StoragePath"],points[i]["PhotoName"],points[i]["UserName"],points[i]["Date"]);
-
-      // stores raw location of a marker
-      markerLocations.push(new google.maps.LatLng(lati,longi));
-
-    } 
-    // centers the map on first marker in array
-    centerMap(parseFloat(points[0]["Lat"]),parseFloat(points[0]["Long"]));
   }
 
+};
+
+// fetches markers and adds them to the map in clusters
+function markerManager(){
+
+  // clears any prestored markers
+  mappedMarkers = [];
+  markerLocations = [];
+
+  // store values used to determine the range of markers that will be generated
+  NumMarkers = points.length;
+  x = 0;
+
+
+  // Checks how many picture rows have been pulled from the database
+  if ((file == "index.html" || file == "") && points.length > 40){
+
+    // randomised the array
+    points = points.sort((a, b) => 0.5 - Math.random());
+
+    // sets number of markers to display
+    NumMarkers = 40;
+  }
+  else if(points.length > 40){
+
+    // wills show the 40 most recent posts on a profile
+    x = points.length - 40;
+  }
+
+
+
+  // creates a marker for each image object
+ while (x < NumMarkers){
+    // converts the lat and long strings to floats
+    lati = parseFloat(points[x]["Lat"]);
+    longi = parseFloat(points[x]["Long"]);
+
+    // makes a marker for the current image
+    makeMarker(lati,longi,points[x]["StoragePath"],points[x]["PhotoName"],points[x]["UserName"],points[x]["Date"]);
+
+    // stores raw location of a marker
+    markerLocations.push(new google.maps.LatLng(lati,longi));
+    x++;
+
+  } 
+  // centers the map on first marker in array
+  centerMap(parseFloat(points[0]["Lat"]),parseFloat(points[0]["Long"]));
+
+
   // creates cluster manager to cluster marker
-  cluster = new MarkerClusterer(map, mappedMarkers);
+  Clusterer = new MarkerClusterer(map, mappedMarkers);
 
   // creates auto complete object to take input from location field
   autoComplete = new google.maps.places.Autocomplete(document.getElementById("location"),{fields: ['geometry','name']});
 
-  // loads homepage specific features
-  if (file == "index.html" || file == ""){
+    // loads homepage specific heatmap
+    if (file == "index.html" || file == ""){
 
-    // creats heatmap of points
-    heatmap = new heatMapper.HeatmapLayer({data: markerLocations, map: map});
+      // creats heatmap of points
+      heatmap = new heatMapper.HeatmapLayer({data: markerLocations, map: map});
+  
+      // displays heatmap to prevent overlap with markers
+      heatmap.setMap(null);
 
-    // displays heatmap to prevent overlap with markers
-    heatmap.setMap(null);
+    }
 
-    // sets filters to correct options
-    markerToggle = document.getElementById("markerToggle");
-    heatColour = document.getElementById("heatColour")
-    markerToggle.addEventListener("click", toggleMarker);
-    document.getElementById("heatColour").style.backgroundColor= '#808080';
+}
+
+// refreshes the markers on the page to show new images
+function refreshMarkers(){
+
+  // clears current selection of markers
+  for(i in mappedMarkers){
+    Clusterer.removeMarker(mappedMarkers[i]);
+    mappedMarkers[i].setMap(null);
   }
 
-
-
-};
+  // makes new markers
+  markerManager();
+}
 
 // switches between heatmap and markers
 function toggleMarker(){
@@ -218,7 +262,7 @@ function toggleMarker(){
     // enables marker system
     if(mappedMarkers[i].getVisible() == false){
       mappedMarkers[i].setVisible(true);
-      cluster.setMap(map);
+      Clusterer.setMap(map);
       heatmap.setMap(null);
       heatColour.style.backgroundColor= '#808080';
       heatColour.style.cursor= 'context-menu';
@@ -229,7 +273,7 @@ function toggleMarker(){
     // enables heatmap system
     else{
       mappedMarkers[i].setVisible(false);
-      cluster.setMap(null);
+      Clusterer.setMap(null);
       heatmap.setMap(map);
       heatColour.style.backgroundColor= '#303f9f';
       heatColour.style.cursor= 'pointer';
