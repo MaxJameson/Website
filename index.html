@@ -59,13 +59,19 @@
 		
 			<h3 class="headers">Want to upload a photo?</h3>
 			<form class="form" id="myForm">
+				<p class = "formInvalid" id="photoError"></p>
+                <br>
 				<input type="file" name="file" id="file">
 				<br>
+				<p class = "formInvalid" id="photoNameError"></p>
+                <br>
 				<label class="textLabel" id="box1">
 					<input type="text" name="photoName"  id ="photoName" placeholder=" ">
 					<span class="placeholder">Photo Name </span>
 				</label>
 				<br>
+				<p class = "formInvalid" id="locationError"></p>
+                <br>
 				<label class="textLabel" id="box2">
 					<input id = "location" type="text" name="location" placeholder=" ">
 					<span class="placeholder">Location taken </span>

@@ -104,6 +104,15 @@ header{
     margin-bottom: -10px;
     }
 
+.formInvalid{
+    color:#f02f2f;
+    font-family: Segoe UI Symbol;
+    font-size: 10;
+    text-align: center;
+    margin-top: -5px;
+    margin-bottom: -10px;
+    }
+
 .footerText{
     color:#ffffff;
     font-family: Segoe UI Symbol;

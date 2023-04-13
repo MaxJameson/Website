@@ -29,14 +29,10 @@ async function uploadFile(){
     const [lat, long, autoName] = getPlace(); 
 
     // checks upload conditions and returns errors
-    conditionsPromise = await errorCheck(images.value, photoName, lat, long, autoName);
+    conditionsNotMet = await errorCheck(images.value, photoName, lat, long, autoName);
     
     // checks if any errors were found
-    if (conditionsPromise != "") {
-        alert(conditionsPromise);
-    }
-    else
-    {
+    if (!conditionsNotMet) {
         // converts the file name to image name defined bu the user
         split = images.files[0].name.split('.');
         exec = split.pop();
@@ -72,53 +68,58 @@ async function uploadFile(){
 
         // clears input fields
         inputFields.forEach(input => input.value = '');
-
     }
 }
 
 // error checking function
 async function errorCheck(photo, name, lat, long, nameCheck){
-    // stores list of errors
-    conditions = []
+
+    // storage error message display blocks
+    PhotoCondition = document.getElementById("photoError");
+    NameCondition = document.getElementById("photoNameError");
+    locationCondition = document.getElementById("locationError");
+    locationCondition.innerHTML = '';
+    NameCondition.innerHTML = '';
+    PhotoCondition.innerHTML = '';
+
+    //boolean to check if any inputs have errors
+    errors = false;
+
 
     // checks if the file is of the correct extenstion
     var re = /(\.jpg|\.jpeg|\.png|\.JPG|\.JPEG|\.PNG)$/i;
     if(photo == "")
     {
-        conditions.push("Please add a photo.\n");
+        errors = true;
+        PhotoCondition.innerHTML = 'Please add a photo.';
     }
     else if (!re.exec(photo)) {
-        conditions.push("File extension not supported!\nsupported file formats are: JPG, JPEG, PNG.\n");
+        errors = true;
+        PhotoCondition.innerHTML = 'File extension not supported!\nsupported file formats are: JPG, JPEG, PNG.';
     }
 
     // checks if photo has a location
     if(lat == null || long == null || !document.getElementById("location").value.includes(nameCheck)){
-        conditions.push("Please add a valid location to your photo.\n");
+        errors = true;
+        locationCondition.innerHTML = 'Please add a valid location to your photo.';
     }
     // checks if the photo has a name
     if(name == ""){
-        conditions.push("Please add a name to your photo.\n");
+        errors = true;
+        NameCondition.innerHTML = 'Please add a name to your photo.';
+        
     }
     else{
 
         // checks if the name used for the current photo has already been used
         nameExists = await getName(name, 1);
         if (nameExists > 0){
-            conditions.push("Name Already Taken, Sorry.\n");
+            errors = true;
+            NameCondition.innerHTML = 'Photo name already taken, sorry.';
         }
     }
-    if(sessionStorage.getItem("userID") == null){
-        conditions.push("Please login to upload a photo");
-    }
 
-    // stores string of errors
-    var conOutput = "";
-        
-    // loops through array of errors and adds them to a string
-    for (i in conditions){
-        conOutput = conOutput + conditions[i];
-    }
-    return conOutput;
+    return  errors;
 }
 
 // !! need to add user check when profiles are done

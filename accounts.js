@@ -51,7 +51,8 @@ async function signIn(){
     // checks returned data to see if the user can be logged in
     if (Object.keys(details).length == 0){
 
-        alert("Incorrect username or password, please try again");
+        UserCondition = document.getElementById("userError");
+        UserCondition.innerHTML = 'Incorrect username or password, please try again';
 
         // clears input fields
         const inputFields = document.querySelectorAll('input');
@@ -83,15 +84,10 @@ async function createAccount(){
     const image = document.getElementById("file");
 
     // checks inputs agains a series of coniditions
-    conditionsPromise = await checkCreation(userName, pass, bio, image.value);
+    conditionsNotMet = await checkCreation(userName, pass, bio, image.value);
 
-    // checks if any conditions have been met
-    if (conditionsPromise != ""){
-
-        alert(conditionsPromise);
-    }
-    else{
-        
+    // checks if any errors were found
+    if (!conditionsNotMet){
         // converts the file name to image name defined by the user
         split = image.files[0].name.split('.');
         exec = split.pop();
@@ -128,7 +124,7 @@ async function createAccount(){
         sessionStorage.setItem("loggedin", true);
         document.location.href = "profile.html";
 
-        // !! move to homepage or profile page
+        // !! move to homepage or profile page       
 
     }
 
@@ -137,19 +133,38 @@ async function createAccount(){
 // checks if account information is valid
 async function checkCreation (userName, pass, bio, image){
 
-    // stores list of errors
-    conditions = []
+    // storage error message display blocks
+    UserCondition = document.getElementById("userError");
+    PassCondition = document.getElementById("passError");
+    PassCondition2 = document.getElementById("passError2");
+    PassCondition3 = document.getElementById("passError3");
+    PassCondition4 = document.getElementById("passError4");
+    BioCondition = document.getElementById("bioError");
+    PicCondition = document.getElementById("picError");
+    UserCondition.innerHTML = '';
+    PassCondition.innerHTML = '';
+    PassCondition2.innerHTML = '';
+    PassCondition3.innerHTML = '';
+    PassCondition4.innerHTML = '';
+    BioCondition.innerHTML = '';
+    PicCondition.innerHTML = '';
+    
+
+    //boolean to check if any inputs have errors
+    errors = false;
 
     // checks if the photo has a name
     if(userName == ""){
-        conditions.push("Please choose your user name.\n");
+        errors = true;
+        UserCondition.innerHTML = 'Please enter your username';
     }
     else{
         
         // checks if the username already exists
         nameExists = await getName(userName, 2);
         if (nameExists > 0){
-            conditions.push("Username Already Taken, Sorry.\n");
+            errors = true;
+            UserCondition.innerHTML = 'Username Already Taken, Sorry';
         }
     }
 
@@ -159,10 +174,11 @@ async function checkCreation (userName, pass, bio, image){
 
     // checks if the photo has a name
     if(pass == ""){
-        conditions.push("Please add a password.\n");
+        errors = true;
+        PassCondition.innerHTML = 'Please enter a password.';
     }
     // checks password strenght
-    else if(!strength.test(pass)){
+    else if(!strength.test(pass) && pass != ""){
 
         // checks individual requirements
         let pLength = new RegExp('(?=.{6,})');
@@ -172,48 +188,49 @@ async function checkCreation (userName, pass, bio, image){
 
         // checks password lenght
         if(!pLength.test(pass)){
-            conditions.push("Password must be a minium of 6 characters long.\n");
+            errors = true;
+            PassCondition.innerHTML = 'Password must be a minium of 6 characters long.';
         }
+
 
         // checks if password contains upper and lowercase letters
         if(!pCase.test(pass)){
-            conditions.push("Password must at least 1 captial letter and one lower case letter.\n");
+            errors = true;
+            PassCondition2.innerHTML = 'Password must at least 1 captial letter and one lower case letter.';
         }
-
+    
         // checks if password contains any numbers
         if(!pDigit.test(pass)){
-            conditions.push("Password must at least 1 number.\n");
+            errors = true;
+            PassCondition3.innerHTML = 'Password must at least 1 number.';
         }
 
         // checks is pasword contains any symbols
         if(!pSpecial.test(pass)){
-            conditions.push("Password must at least 1 special character (e.g. ?).\n");
+            errors = true;
+            PassCondition4.innerHTML = 'Password must at least 1 special character (e.g. ?).';
         }
     }
 
     // checks if the photo has a name
     if(bio == ""){
-        conditions.push("Please add a bio.\n");
+        errors = true;
+        BioCondition.innerHTML = 'Please add a bio.';
     }  
 
     // checks if the file is of the correct extenstion
     var re = /(\.jpg|\.jpeg|\.png|\.JPG|\.JPEG|\.PNG)$/i;
     if(image == "")
     {
-        conditions.push("Please add a photo.\n");
+        errors = true;
+        PicCondition.innerHTML = 'Please add a photo.';
     }
     else if (!re.exec(image)) {
-        conditions.push("File extension not supported!\nsupported file formats are: JPG, JPEG, PNG.\n");
+        errors = true;
+        PicCondition.innerHTML = 'File extension not supported!\nsupported file formats are: JPG, JPEG, PNG.';
     }
 
-    // stores string of errors
-    var conOutput = "";
-        
-    // loops through array of errors and adds them to a string
-    for (i in conditions){
-        conOutput = conOutput + conditions[i];
-    }
-    return conOutput;
+    return errors;
 }
 
 //uploads account to database
