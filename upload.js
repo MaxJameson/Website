@@ -109,6 +109,10 @@ async function errorCheck(photo, name, lat, long, nameCheck){
         NameCondition.innerHTML = 'Please add a name to your photo.';
         
     }
+    else if(name.length > 29){
+        errors = true;
+        NameCondition.innerHTML = 'Photo name is too long.';
+    } 
     else{
 
         // checks if the name used for the current photo has already been used

@@ -158,6 +158,10 @@ async function checkCreation (userName, pass, bio, image){
         errors = true;
         UserCondition.innerHTML = 'Please enter your username';
     }
+    else if(userName.length > 18){
+        errors = true;
+        UserCondition.innerHTML = 'Username too long.';
+    }
     else{
         
         // checks if the username already exists
@@ -176,6 +180,10 @@ async function checkCreation (userName, pass, bio, image){
     if(pass == ""){
         errors = true;
         PassCondition.innerHTML = 'Please enter a password.';
+    }
+    else if(pass.length > 30){
+        errors = true;
+        PassCondition.innerHTML = 'Password too long.';
     }
     // checks password strenght
     else if(!strength.test(pass) && pass != ""){
@@ -212,10 +220,15 @@ async function checkCreation (userName, pass, bio, image){
         }
     }
 
+
     // checks if the photo has a name
     if(bio == ""){
         errors = true;
         BioCondition.innerHTML = 'Please add a bio.';
+    }
+    else if(bio.length > 300){
+        errors = true;
+        BioCondition.innerHTML = 'Bio must be less than 300 characters.';
     }  
 
     // checks if the file is of the correct extenstion
