@@ -15,16 +15,25 @@ var Clusterer;
 // creates markers
 function makeMarker(lat, lng, photo, photoName, userName, Date){
 
+  if(photoName == "");
   // converts file to an image source
   var image = new Image();
   image.src = photo;
+
+  lat = lat.toFixed(6);
+  lat = Number(lat);
+  
+  lng = lng.toFixed(6);
+  lng = Number(lng);
 
   // store the current location for the image as a google position object
   current = new google.maps.LatLng(lat,lng)
 
   // loops through all markers
-  for (i in mappedMarkers){
 
+  for (i in mappedMarkers){
+    console.log("Current: " + current);
+    console.log("Compare: " + mappedMarkers[i].getPosition());
     // checks if the current marker is in the same position of another marker
     if (mappedMarkers[i].getPosition().equals(current)){
 
@@ -126,7 +135,7 @@ function centerMap(lat, long){
   
   // allows the map to zoom in on a specific point on profile pages
   if(file != "index.html" && file != "" ){
-    map.setZoom(13);
+    map.setZoom(20);
   }
   else{
 
@@ -164,7 +173,7 @@ async function initMap() {
   // checks if the user has uploaded any photos
   if(points.length == 0){
     
-    document.getElementByI("welcomeText").innerHTML = "You're map has no photos, go down below to upload some!";
+    document.getElementById("welcomeText").innerHTML = "You're map has no photos, go down below to upload some!";
   }
   else{
 
@@ -172,6 +181,9 @@ async function initMap() {
     markerManager();
 
   }
+
+  // creates auto complete object to take input from location field
+  autoComplete = new google.maps.places.Autocomplete(document.getElementById("location"),{fields: ['geometry','name']});
 
 };
 
@@ -218,15 +230,12 @@ function markerManager(){
     x++;
 
   } 
-  // centers the map on first marker in array
+  // centers the map on a photo
   centerMap(parseFloat(points[0]["Lat"]),parseFloat(points[0]["Long"]));
 
 
   // creates cluster manager to cluster marker
   Clusterer = new MarkerClusterer(map, mappedMarkers);
-
-  // creates auto complete object to take input from location field
-  autoComplete = new google.maps.places.Autocomplete(document.getElementById("location"),{fields: ['geometry','name']});
 
     // loads homepage specific heatmap
     if (file == "index.html" || file == ""){
@@ -252,6 +261,17 @@ function refreshMarkers(){
 
   // makes new markers
   markerManager();
+}
+
+// adds a new marker to the clusterer
+function addToCluster(){
+  // clears current selection of markers
+  for(i in mappedMarkers){
+    Clusterer.removeMarker(mappedMarkers[i]);
+  }
+
+  // creates cluster manager to cluster marker
+  Clusterer = new MarkerClusterer(map, mappedMarkers);
 }
 
 // switches between heatmap and markers

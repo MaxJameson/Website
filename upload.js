@@ -63,6 +63,9 @@ async function uploadFile(){
         // adds the photo to the map
         makeMarker(lat, long, ("uploads/" + newName), photoName, sessionStorage.getItem("user"), date);
 
+        // adds new marker to cluster
+        addToCluster();
+
         // centers the map on the new marker
         centerMap(lat,long);
 
