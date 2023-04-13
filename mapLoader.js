@@ -8,8 +8,7 @@ let markerLocations = [];
 url = document.URL;
 file = url.substring(url.lastIndexOf('/')+1);
 
-var htmltest;
-
+// stores clusterer
 var Clusterer;
 
 // creates markers
@@ -27,13 +26,12 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
   lng = Number(lng);
 
   // store the current location for the image as a google position object
-  current = new google.maps.LatLng(lat,lng)
+  current = new google.maps.LatLng(lat,lng);
 
   // loops through all markers
 
   for (i in mappedMarkers){
-    console.log("Current: " + current);
-    console.log("Compare: " + mappedMarkers[i].getPosition());
+
     // checks if the current marker is in the same position of another marker
     if (mappedMarkers[i].getPosition().equals(current)){
 
@@ -135,15 +133,17 @@ function centerMap(lat, long){
   
   // allows the map to zoom in on a specific point on profile pages
   if(file != "index.html" && file != "" ){
-    map.setZoom(20);
+    map.setZoom(15);
   }
   else{
 
     // sets filters to correct options
     refresh = document.getElementById("refresh");
+    surprise = document.getElementById("suprise");
     markerToggle = document.getElementById("markerToggle");
     heatColour = document.getElementById("heatColour");
     markerToggle.addEventListener("click", toggleMarker);
+    surprise.addEventListener("click", randomPic);
     refresh.addEventListener("click", refreshMarkers);
     document.getElementById("heatColour").style.backgroundColor= '#808080';
   }
@@ -265,13 +265,32 @@ function refreshMarkers(){
 
 // adds a new marker to the clusterer
 function addToCluster(){
-  // clears current selection of markers
+  // clears current clusterer
   for(i in mappedMarkers){
     Clusterer.removeMarker(mappedMarkers[i]);
   }
 
   // creates cluster manager to cluster marker
   Clusterer = new MarkerClusterer(map, mappedMarkers);
+}
+
+// moves map to a random marker
+function randomPic(){
+
+  // selects a random marker
+  ranMarker = Math.floor(Math.random() * (mappedMarkers.length - 1));
+
+  // gets position of random marker
+  lt = mappedMarkers[ranMarker].getPosition().lat();
+  lg = mappedMarkers[ranMarker].getPosition().lng();
+
+  // store the current location for the marker as a google position object
+  ranLocation = new google.maps.LatLng(lt,lg);
+  
+  // moves map to marker
+  map.panTo(ranLocation);
+  map.setZoom(15);
+  
 }
 
 // switches between heatmap and markers
