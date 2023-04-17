@@ -4,6 +4,9 @@ let mappedMarkers = [];
 // stores array of locations
 let markerLocations = [];
 
+// stores location of all photos
+let allLocations = [];
+
 // stores the name of the current page
 url = document.URL;
 file = url.substring(url.lastIndexOf('/')+1);
@@ -193,45 +196,55 @@ function markerManager(){
   // clears any prestored markers
   mappedMarkers = [];
   markerLocations = [];
+  allLocations = [];
 
   // store values used to determine the range of markers that will be generated
   NumMarkers = points.length;
   x = 0;
-
+  const MaxMarkers = 40;
 
   // Checks how many picture rows have been pulled from the database
-  if ((file == "index.html" || file == "") && points.length > 40){
+  if ((file == "index.html" || file == "") && points.length > MaxMarkers){
 
     // randomised the array
     points = points.sort((a, b) => 0.5 - Math.random());
 
     // sets number of markers to display
-    NumMarkers = 40;
+    NumMarkers = MaxMarkers;
   }
-  else if(points.length > 40){
+  else if(points.length > MaxMarkers){
 
     // wills show the 40 most recent posts on a profile
-    x = points.length - 40;
+    x = points.length - MaxMarkers;
   }
 
 
 
   // creates a marker for each image object
- while (x < NumMarkers){
-    // converts the lat and long strings to floats
-    lati = parseFloat(points[x]["Lat"]);
-    longi = parseFloat(points[x]["Long"]);
+ while (x < points.length){
+
+  // converts the lat and long strings to floats
+  lati = parseFloat(points[x]["Lat"]);
+  longi = parseFloat(points[x]["Long"]);
+
+  // only allows a maxium of 40 markers to be displayed at one time
+  if (x < NumMarkers){
+
 
     // makes a marker for the current image
     makeMarker(lati,longi,points[x]["StoragePath"],points[x]["PhotoName"],points[x]["UserName"],points[x]["Date"]);
 
     // stores raw location of a marker
     markerLocations.push(new google.maps.LatLng(lati,longi));
-    x++;
+
+  }
+  // adds location of all photos in database to an array
+  allLocations.push(new google.maps.LatLng(lati,longi));
+  x++;
 
   } 
   // centers the map on a photo
-  centerMap(parseFloat(points[0]["Lat"]),parseFloat(points[0]["Long"]));
+  centerMap(parseFloat(points[points.length - 1]["Lat"]),parseFloat(points[points.length - 1]["Long"]));
 
 
   // creates cluster manager to cluster marker
@@ -241,7 +254,7 @@ function markerManager(){
     if (file == "index.html" || file == ""){
 
       // creats heatmap of points
-      heatmap = new heatMapper.HeatmapLayer({data: markerLocations, map: map});
+      heatmap = new heatMapper.HeatmapLayer({data: allLocations, map: map});
   
       // displays heatmap to prevent overlap with markers
       heatmap.setMap(null);
