@@ -128,14 +128,14 @@ async function viewProfile(name){
 }
 
 // centers the map on a specific location
-function centerMap(lat, long){
+function centerMap(lat, long, uploaded){
 
   // sets location of the map to the first marker from the array of markers
   coords = new google.maps.LatLng(lat,long);
   map.panTo(coords);
-  
+  console.log(uploaded);
   // allows the map to zoom in on a specific point on profile pages
-  if(file != "index.html" && file != "" ){
+  if((file != "index.html" && file != "")){
     map.setZoom(15);
   }
   else{
@@ -149,6 +149,10 @@ function centerMap(lat, long){
     surprise.addEventListener("click", randomPic);
     refresh.addEventListener("click", refreshMarkers);
     document.getElementById("heatColour").style.backgroundColor= '#808080';
+  }
+
+  if(uploaded == true){
+    map.setZoom(15);
   }
 
 }
@@ -201,7 +205,7 @@ function markerManager(){
   // store values used to determine the range of markers that will be generated
   NumMarkers = points.length;
   x = 0;
-  const MaxMarkers = 40;
+  const MaxMarkers = 20;
 
   // Checks how many picture rows have been pulled from the database
   if ((file == "index.html" || file == "") && points.length > MaxMarkers){
@@ -244,7 +248,7 @@ function markerManager(){
 
   } 
   // centers the map on a photo
-  centerMap(parseFloat(points[points.length - 1]["Lat"]),parseFloat(points[points.length - 1]["Long"]));
+  centerMap(mappedMarkers[mappedMarkers.length - 1].getPosition().lat(),mappedMarkers[mappedMarkers.length - 1].getPosition().lng(), false);
 
 
   // creates cluster manager to cluster marker

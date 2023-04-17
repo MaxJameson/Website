@@ -67,7 +67,7 @@ async function uploadFile(){
         addToCluster();
 
         // centers the map on the new marker
-        centerMap(lat,long);
+        centerMap(lat,long, true);
 
         // clears input fields
         inputFields.forEach(input => input.value = '');
