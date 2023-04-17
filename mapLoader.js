@@ -138,18 +138,6 @@ function centerMap(lat, long, uploaded){
   if((file != "index.html" && file != "")){
     map.setZoom(15);
   }
-  else{
-
-    // sets filters to correct options
-    refresh = document.getElementById("refresh");
-    surprise = document.getElementById("suprise");
-    markerToggle = document.getElementById("markerToggle");
-    heatColour = document.getElementById("heatColour");
-    markerToggle.addEventListener("click", toggleMarker);
-    surprise.addEventListener("click", randomPic);
-    refresh.addEventListener("click", refreshMarkers);
-    document.getElementById("heatColour").style.backgroundColor= '#808080';
-  }
 
   if(uploaded == true){
     map.setZoom(15);
@@ -257,6 +245,16 @@ function markerManager(){
     // loads homepage specific heatmap
     if (file == "index.html" || file == ""){
 
+      // sets filters to correct options
+      refresh = document.getElementById("refresh");
+      surprise = document.getElementById("suprise");
+      markerToggle = document.getElementById("markerToggle");
+      heatColour = document.getElementById("heatColour");
+      markerToggle.addEventListener("click", toggleMarker);
+      surprise.addEventListener("click", randomPic);
+      refresh.addEventListener("click", refreshMarkers);
+      document.getElementById("heatColour").style.backgroundColor= '#808080';      
+
       // creats heatmap of points
       heatmap = new heatMapper.HeatmapLayer({data: allLocations, map: map});
   
@@ -269,15 +267,7 @@ function markerManager(){
 
 // refreshes the markers on the page to show new images
 function refreshMarkers(){
-
-  // clears current selection of markers
-  for(i in mappedMarkers){
-    Clusterer.removeMarker(mappedMarkers[i]);
-    mappedMarkers[i].setMap(null);
-  }
-
-  // makes new markers
-  markerManager();
+  location.reload();
 }
 
 // adds a new marker to the clusterer
@@ -320,10 +310,20 @@ function toggleMarker(){
       mappedMarkers[i].setVisible(true);
       Clusterer.setMap(map);
       heatmap.setMap(null);
+
+      // toggles heatmap features
       heatColour.style.backgroundColor= '#808080';
       heatColour.style.cursor= 'context-menu';
       heatColour.removeEventListener("click", changeGradient);
       markerToggle.innerText= 'Toggle Heatmap';
+
+      // toggles map features
+      surprise.addEventListener("click", randomPic);
+      surprise.style.backgroundColor= '#303f9f';
+      surprise.style.cursor= 'pointer';
+      refresh.addEventListener("click", refreshMarkers);
+      refresh.style.backgroundColor= '#303f9f';
+      refresh.style.cursor= 'pointer';
     }
 
     // enables heatmap system
@@ -331,10 +331,20 @@ function toggleMarker(){
       mappedMarkers[i].setVisible(false);
       Clusterer.setMap(null);
       heatmap.setMap(map);
+
+      // toggles heatmap features
       heatColour.style.backgroundColor= '#303f9f';
       heatColour.style.cursor= 'pointer';
       heatColour.addEventListener("click", changeGradient);
       markerToggle.innerText= 'Toggle Markers';
+
+      // toggles map features
+      surprise.removeEventListener("click", randomPic);
+      surprise.style.backgroundColor= '#808080';
+      surprise.style.cursor= 'context-menu';
+      refresh.removeEventListener("click", refreshMarkers);
+      refresh.style.backgroundColor= '#808080';
+      refresh.style.cursor= 'context-menu';
       
     }
   }
