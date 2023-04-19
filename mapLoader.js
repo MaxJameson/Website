@@ -77,7 +77,7 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
   // creates an info window for the marker along with a button to access to posting users profile
   const infowindow = new google.maps.InfoWindow({
     content: ('<button class="infowindow" value="'+userName+'" onclick="viewProfile(this.value)">'+ userName+'</button>' +
-              '<h3><a class="infotext">'+ photoName +'</a></h3>' +
+              '<h3><a class="infotext">'+ photoName +'</a></h3>' +  
               '<h3 class="infotext">Posted: '+ Date +'</h3>' + 
               '<a href="'+photo+'" rel="lightbox"><img class="infoPic" src="'+photo+'" width="'+newWidth*4+'" height="'+45*4+'"></a>'),
   });
@@ -95,7 +95,7 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
     newWidth = aspectRatio(image);
 
     // sets marker image
-    marker.setIcon({url: photo, scaledSize: new google.maps.Size((newWidth),(45))});
+    marker.setIcon({url: photo, scaledSize: new google.maps.Size((newWidth*1.2),(45*1.2))});
     marker.setVisible(true);
     marker.setAnimation(google.maps.Animation.DROP);
    
@@ -133,7 +133,6 @@ function centerMap(lat, long, uploaded){
   // sets location of the map to the first marker from the array of markers
   coords = new google.maps.LatLng(lat,long);
   map.panTo(coords);
-  console.log(uploaded);
   // allows the map to zoom in on a specific point on profile pages
   if((file != "index.html" && file != "")){
     map.setZoom(15);
@@ -158,12 +157,14 @@ async function initMap() {
     center: { lat: 48.85, lng: 2.35 },
     zoom: 6,
     optimized: false,
-    fullscreenControl: false,
+    streetViewControl: false,
     mapTypeControl: false,
   });
 
   // fetches an object of images heatMapper
   points = await getPoints();
+
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById("Divfilters"));
 
 
   // checks if the user has uploaded any photos
@@ -181,11 +182,12 @@ async function initMap() {
   // creates auto complete object to take input from location field
   autoComplete = new google.maps.places.Autocomplete(document.getElementById("location"),{fields: ['geometry','name']});
 
-  var myoverlay = new google.maps.OverlayView();
-  myoverlay.draw = function () {
+  // creates an overlay to customise markers
+  var markerOverlay = new google.maps.OverlayView();
+  markerOverlay.draw = function () {
       this.getPanes().markerLayer.id='markerLayer';
   };
-  myoverlay.setMap(map);
+  markerOverlay.setMap(map);
 
 };
 

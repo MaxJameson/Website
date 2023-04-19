@@ -6,6 +6,6 @@ if (sessionStorage.getItem("user") != null){
 }
 else{
     // sets page to display user related information
-    document.getElementById("uploadBox").innerHTML = '<h3 class="headers">Please Sign in to upload photos</h3>';
+    document.getElementById("uploadBox").innerHTML = '<h3 class="headers">Please <u><a href="signin.html">Sign in </a></u>to upload photos</h3>';
     document.getElementById("profileText").innerHTML = 'Sign In';
 }
