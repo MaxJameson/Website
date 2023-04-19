@@ -54,6 +54,8 @@ header{
     justify-content: center;
 }
 
+
+
 #map{
     height: 80vh;
     width:100%;
@@ -68,6 +70,15 @@ header{
     margin-right: auto;
     border-radius: 25px;
   }
+
+#markerLayer img{
+    border-radius: 10px;
+
+}
+
+.infoPic{
+    border-radius: 25px;
+}
 
 #profileBox{
     padding-top: 50px;

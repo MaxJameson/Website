@@ -79,7 +79,7 @@ function makeMarker(lat, lng, photo, photoName, userName, Date){
     content: ('<button class="infowindow" value="'+userName+'" onclick="viewProfile(this.value)">'+ userName+'</button>' +
               '<h3><a class="infotext">'+ photoName +'</a></h3>' +
               '<h3 class="infotext">Posted: '+ Date +'</h3>' + 
-              '<a href="'+photo+'" rel="lightbox"><img src="'+photo+'" width="'+newWidth*4+'" height="'+45*4+'"></a>'),
+              '<a href="'+photo+'" rel="lightbox"><img class="infoPic" src="'+photo+'" width="'+newWidth*4+'" height="'+45*4+'"></a>'),
   });
 
   // stops the marker bouncing when deselected
@@ -157,6 +157,7 @@ async function initMap() {
     mapId: "2f686051150cc298",
     center: { lat: 48.85, lng: 2.35 },
     zoom: 6,
+    optimized: false,
     fullscreenControl: false,
     mapTypeControl: false,
   });
@@ -179,6 +180,12 @@ async function initMap() {
 
   // creates auto complete object to take input from location field
   autoComplete = new google.maps.places.Autocomplete(document.getElementById("location"),{fields: ['geometry','name']});
+
+  var myoverlay = new google.maps.OverlayView();
+  myoverlay.draw = function () {
+      this.getPanes().markerLayer.id='markerLayer';
+  };
+  myoverlay.setMap(map);
 
 };
 

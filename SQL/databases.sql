@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `tblPhotos` (
     `PhotoID` int(11) NOT NULL AUTO_INCREMENT,
     `UserID` int(11) DEFAULT NULL,
     `PhotoName` varchar(30) DEFAULT NULL,
-    `StoragePath` varchar(30) DEFAULT NULL,
+    `StoragePath` varchar(45) DEFAULT NULL,
     `Date` date DEFAULT NULL,
     `Lat` decimal(9,6) DEFAULT NULL,
     `Long` decimal(9,6) DEFAULT NULL,

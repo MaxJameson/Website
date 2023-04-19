@@ -1,7 +1,8 @@
-// stores the relavent objects from the webpahe
+// stores the upload form
 const myForm = document.getElementById("myForm");
 const images = document.getElementById("file");
 const inputFields = document.querySelectorAll('input');
+    
 
 // checks if a user has signed in
 if (sessionStorage.length != 0){
@@ -53,7 +54,6 @@ async function uploadFile(){
             body: formData
         }).catch(console.error);
 
-        // !! need to add user check when profiles are done
         // uploads image data to database
         sqlUpload(photoName,newName,lat, long,sessionStorage.getItem("userID"), date);
     
@@ -106,6 +106,7 @@ async function errorCheck(photo, name, lat, long, nameCheck){
         errors = true;
         locationCondition.innerHTML = 'Please add a valid location to your photo.';
     }
+
     // checks if the photo has a name
     if(name == ""){
         errors = true;
@@ -129,7 +130,6 @@ async function errorCheck(photo, name, lat, long, nameCheck){
     return  errors;
 }
 
-// !! need to add user check when profiles are done
 // uploads image data to the database
 function sqlUpload(name,fileName, lat, long, ID, date){
 
@@ -152,12 +152,6 @@ function sqlUpload(name,fileName, lat, long, ID, date){
     fetch(endpoint, {
         method: "post",
         body: sqlForm
-    }).then(function(response){
-        return response.text();
-    }).then(function(text){
-        console.log(text);
-    }).catch(function(error){
-        console.error(error);
-    })
+        }).catch(console.error);
 
 }

@@ -25,6 +25,6 @@ else{
 
     // inserts user info onto the page
     document.getElementById("profileName").innerHTML = sessionStorage.getItem("user");
-    document.getElementById("bio").innerHTML = sessionStorage.getItem("bio");
+    document.getElementById("bio").textContent += sessionStorage.getItem("bio");
 
 }
