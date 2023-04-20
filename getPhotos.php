@@ -21,7 +21,6 @@ else{
     $query = mysqli_query($db, "SELECT tblphotos.PhotoName, tblphotos.StoragePath, tblphotos.Date, tblphotos.Lat, tblphotos.Long, tblprofiles.UserName FROM tblphotos INNER JOIN tblprofiles ON tblphotos.UserID = tblprofiles.UserID WHERE tblprofiles.UserID = '$id'");
 }
 
-
 // stores the query result
 $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
 

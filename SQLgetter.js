@@ -1,8 +1,6 @@
 // calls a php script to fetch images from a database
 async function getPoints() {
 
-    
-
     // stores the name of the current page
     url = document.URL;
     file = url.substring(url.lastIndexOf('/')+1);

@@ -161,11 +161,10 @@ async function initMap() {
     mapTypeControl: false,
   });
 
-  // fetches an object of images heatMapper
-  points = await getPoints();
-
   map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById("Divfilters"));
 
+  // fetches an object of images heatMapper
+  points = await getPoints();
 
   // checks if the user has uploaded any photos
   if(points.length == 0){
@@ -403,6 +402,50 @@ function aspectRatio(image){
   w = image.width;
   newWidth = (w / h) * 45;
   return newWidth;
+}
+
+// calls a php script to fetch images from a database
+async function getPoints() {
+
+  // stores the name of the current page
+  url = document.URL;
+  file = url.substring(url.lastIndexOf('/')+1);
+
+  // checks if the user is on their profile page
+  if(file == "profile.html"){
+
+      // fetches current profiles photos
+      return photoFetch(sessionStorage.getItem("userID"));
+
+  }
+  else if(file == "profileViewer.html"){
+          // fetches current profiles photos
+          return photoFetch(sessionStorage.getItem("viewUserID"));
+  }
+
+  return photoFetch(" ");
+}
+
+// submits a fetch request for photos from the database
+async function photoFetch(id){
+
+  // create a form to store user ID
+  const photoForm = new FormData();
+
+  // adds user ID to form
+  photoForm.append('id',id)
+
+  // fetches photos
+  await fetch('getPhotos.php',{
+      method: "post",
+      body: photoForm
+  }).then((res) => res.json())
+  .then(response => {
+      photos = response;
+  }).catch(error => console.log(error))
+      
+  // returns an object containing records
+  return photos; 
 }
 
 // runs the function to create the map
