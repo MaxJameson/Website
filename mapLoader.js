@@ -277,13 +277,18 @@ function markerManager(){
 
 // refreshes the markers on the page to show new images
 function refreshMarkers(){
-  // clears current clusterer
+
+  // clears current clusterer and removes marker
   for(i in mappedMarkers){
     Clusterer.removeMarker(mappedMarkers[i]);
     mappedMarkers[i].setMap(null);
   }
+
+  // resets cluster and heatmap
   Clusterer = null;
   heatmap = null;
+
+  // creates new markers
   markerManager();
 }
 
