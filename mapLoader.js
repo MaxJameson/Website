@@ -266,7 +266,7 @@ function markerManager(){
       document.getElementById("heatColour").style.backgroundColor= '#808080';
 
       // prevents refresh button from displaying when less than 20 markers exist in database
-      if(MaxMarkers < 20){
+      if(NumMarkers < 20){
         refresh.style.display="none";
       }
 
