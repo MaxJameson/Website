@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS `tblProfiles` (
     `UserID` int(11) NOT NULL AUTO_INCREMENT,
     `UserName` varchar(20) DEFAULT NULL,
     `Password` varchar(120) DEFAULT NULL,
-    `ProfilePicture` varchar(100) DEFAULT NULL,
+    `ProfilePicture` varchar(45) DEFAULT NULL,
     `Bio` longtext DEFAULT NULL,
     `DateJoined` date DEFAULT NULL,
     PRIMARY KEY (`UserID`)
