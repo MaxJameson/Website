@@ -238,11 +238,13 @@ function markerManager(){
     markerLocations.push(new google.maps.LatLng(lati,longi));
 
   }
+
   // adds location of all photos in database to an array
   allLocations.push(new google.maps.LatLng(lati,longi));
   x++;
 
-  } 
+  }
+
   // centers the map on a photo
   centerMap(mappedMarkers[mappedMarkers.length - 1].getPosition().lat(),mappedMarkers[mappedMarkers.length - 1].getPosition().lng(), false);
 
@@ -261,7 +263,7 @@ function markerManager(){
       markerToggle.addEventListener("click", toggleMarker);
       surprise.addEventListener("click", randomPic);
       refresh.addEventListener("click", refreshMarkers);
-      document.getElementById("heatColour").style.backgroundColor= '#808080';      
+      document.getElementById("heatColour").style.backgroundColor= '#808080';
 
       // creats heatmap of points
       heatmap = new heatMapper.HeatmapLayer({data: allLocations, map: map});
@@ -275,7 +277,14 @@ function markerManager(){
 
 // refreshes the markers on the page to show new images
 function refreshMarkers(){
-  location.reload();
+  // clears current clusterer
+  for(i in mappedMarkers){
+    Clusterer.removeMarker(mappedMarkers[i]);
+    mappedMarkers[i].setMap(null);
+  }
+  Clusterer = null;
+  heatmap = null;
+  markerManager();
 }
 
 // adds a new marker to the clusterer
@@ -316,44 +325,52 @@ function toggleMarker(){
     // enables marker system
     if(mappedMarkers[i].getVisible() == false){
       mappedMarkers[i].setVisible(true);
-      Clusterer.setMap(map);
-      heatmap.setMap(null);
 
-      // toggles heatmap features
-      heatColour.style.backgroundColor= '#808080';
-      heatColour.style.cursor= 'context-menu';
-      heatColour.removeEventListener("click", changeGradient);
-      markerToggle.innerText= 'Toggle Heatmap';
+      // prevents map options from being set multple times
+      if(i == 0){
+        Clusterer.setMap(map);
+        heatmap.setMap(null);
+  
+        // toggles heatmap features
+        heatColour.style.backgroundColor= '#808080';
+        heatColour.style.cursor= 'context-menu';
+        heatColour.removeEventListener("click", changeGradient);
+        markerToggle.innerText= 'Toggle Heatmap';
+  
+        // toggles map features
+        surprise.addEventListener("click", randomPic);
+        surprise.style.backgroundColor= '#303f9f';
+        surprise.style.cursor= 'pointer';
+        refresh.addEventListener("click", refreshMarkers);
+        refresh.style.backgroundColor= '#303f9f';
+        refresh.style.cursor= 'pointer';
+      }
 
-      // toggles map features
-      surprise.addEventListener("click", randomPic);
-      surprise.style.backgroundColor= '#303f9f';
-      surprise.style.cursor= 'pointer';
-      refresh.addEventListener("click", refreshMarkers);
-      refresh.style.backgroundColor= '#303f9f';
-      refresh.style.cursor= 'pointer';
     }
 
     // enables heatmap system
     else{
       mappedMarkers[i].setVisible(false);
-      Clusterer.setMap(null);
-      heatmap.setMap(map);
 
-      // toggles heatmap features
-      heatColour.style.backgroundColor= '#303f9f';
-      heatColour.style.cursor= 'pointer';
-      heatColour.addEventListener("click", changeGradient);
-      markerToggle.innerText= 'Toggle Markers';
-
-      // toggles map features
-      surprise.removeEventListener("click", randomPic);
-      surprise.style.backgroundColor= '#808080';
-      surprise.style.cursor= 'context-menu';
-      refresh.removeEventListener("click", refreshMarkers);
-      refresh.style.backgroundColor= '#808080';
-      refresh.style.cursor= 'context-menu';
-      
+      // prevents map options from being set multple times
+      if(i ==0){
+        Clusterer.setMap(null);
+        heatmap.setMap(map);
+  
+        // toggles heatmap features
+        heatColour.style.backgroundColor= '#303f9f';
+        heatColour.style.cursor= 'pointer';
+        heatColour.addEventListener("click", changeGradient);
+        markerToggle.innerText= 'Toggle Markers';
+  
+        // toggles map features
+        surprise.removeEventListener("click", randomPic);
+        surprise.style.backgroundColor= '#808080';
+        surprise.style.cursor= 'context-menu';
+        refresh.removeEventListener("click", refreshMarkers);
+        refresh.style.backgroundColor= '#808080';
+        refresh.style.cursor= 'context-menu';
+      }
     }
   }
 };
@@ -433,7 +450,7 @@ async function photoFetch(id){
   const photoForm = new FormData();
 
   // adds user ID to form
-  photoForm.append('id',id)
+  photoForm.append('id',id);
 
   // fetches photos
   await fetch('getPhotos.php',{
