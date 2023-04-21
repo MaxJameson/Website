@@ -265,6 +265,11 @@ function markerManager(){
       refresh.addEventListener("click", refreshMarkers);
       document.getElementById("heatColour").style.backgroundColor= '#808080';
 
+      // prevents refresh button from displaying when less than 20 markers exist in database
+      if(MaxMarkers < 20){
+        refresh.style.display="none";
+      }
+
       // creats heatmap of points
       heatmap = new heatMapper.HeatmapLayer({data: allLocations, map: map});
   
