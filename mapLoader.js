@@ -113,6 +113,7 @@ async function viewProfile(name){
   const profileForm = new FormData();
   profileForm.append('userName',name);
 
+  // fetches selected profile from the database
   await fetch('SQLfetchProfile.php',{
     method: "post",
     body: profileForm
@@ -121,6 +122,7 @@ async function viewProfile(name){
     details = response;
   }).catch(error => console.log(error))
 
+  // stores profile information in session storage
   sessionStorage.setItem("viewUserID", details[0]["UserID"]);
   sessionStorage.setItem("viewProfilePic", details[0]["ProfilePicture"]);
   sessionStorage.setItem("viewBio", details[0]["Bio"]);
@@ -133,11 +135,13 @@ function centerMap(lat, long, uploaded){
   // sets location of the map to the first marker from the array of markers
   coords = new google.maps.LatLng(lat,long);
   map.panTo(coords);
+
   // allows the map to zoom in on a specific point on profile pages
   if((file != "index.html" && file != "")){
     map.setZoom(15);
   }
 
+  // zooms map in if a photo has been uploaded
   if(uploaded == true){
     map.setZoom(15);
   }
@@ -161,6 +165,7 @@ async function initMap() {
     mapTypeControl: false,
   });
 
+  // assigns filters to the maps control bar
   map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById("Divfilters"));
 
   // fetches an object of images heatMapper
@@ -385,30 +390,7 @@ function toggleMarker(){
   }
 };
 
-// changes colour of heatmap
-function changeGradient() {
-  const gradient = [
-    "rgba(0, 255, 255, 0)",
-    "rgba(0, 255, 255, 1)",
-    "rgba(0, 191, 255, 1)",
-    "rgba(0, 127, 255, 1)",
-    "rgba(0, 63, 255, 1)",
-    "rgba(0, 0, 255, 1)",
-    "rgba(0, 0, 223, 1)",
-    "rgba(0, 0, 191, 1)",
-    "rgba(0, 0, 159, 1)",
-    "rgba(0, 0, 127, 1)",
-    "rgba(63, 0, 91, 1)",
-    "rgba(127, 0, 63, 1)",
-    "rgba(191, 0, 31, 1)",
-    "rgba(255, 0, 0, 1)",
-  ];
-
-  // sets heatmap colours
-  heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
-};
-
-
+// stores the location from the autoComplete input field 
 function getPlace(){
   // stores the current selected location as an object
   let place = autoComplete.getPlace();
@@ -474,6 +456,36 @@ async function photoFetch(id){
   // returns an object containing records
   return photos; 
 }
+
+/*
+Description: Changes gradient colours on the heatmap
+Author: Google
+Date: 28 April 2023
+URL: https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap
+*/
+
+// changes colour of heatmap
+function changeGradient() {
+  const gradient = [
+    "rgba(0, 255, 255, 0)",
+    "rgba(0, 255, 255, 1)",
+    "rgba(0, 191, 255, 1)",
+    "rgba(0, 127, 255, 1)",
+    "rgba(0, 63, 255, 1)",
+    "rgba(0, 0, 255, 1)",
+    "rgba(0, 0, 223, 1)",
+    "rgba(0, 0, 191, 1)",
+    "rgba(0, 0, 159, 1)",
+    "rgba(0, 0, 127, 1)",
+    "rgba(63, 0, 91, 1)",
+    "rgba(127, 0, 63, 1)",
+    "rgba(191, 0, 31, 1)",
+    "rgba(255, 0, 0, 1)",
+  ];
+
+  // sets heatmap colours
+  heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
+};
 
 // runs the function to create the map
 window.initMap = initMap;

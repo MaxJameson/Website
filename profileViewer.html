@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="eng">
-
+<!-- Profile viewer page -->
 <head>
 
     <title>bitMap - profile</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="bitMap - profile page." />
     <meta name="keywords" content="bitMap,map,photos,photography,world,earth,view" />
-	<meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Allows responsvie web page -->
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 	<link rel="stylesheet" href="s2.css">
+	<!--
+	Description: Lightbox image viewing library
+	Author:	Dhakar, L
+	Date: 7 July 2013
+	URL: https://github.com/lokesh/lightbox2
+	-->
 	<link rel="stylesheet" href="lightbox/css/lightbox.min.css"> 
+	<!--
+	Description: Cluster manager for map markers
+	Author:	Google Maps
+	Date: 28 september 2021
+	URL: https://github.com/googlemaps/js-markerclusterer
+	-->
 	<script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
 	</script>
 	
@@ -19,7 +31,7 @@
 
 	<div id="container">
 	
-		<!-- header -->
+
 		<header>
 		
 			<h2 class="title"><a href="index.html">bitMap</a></h2>
@@ -35,7 +47,7 @@
 			
 		</header>
 		
-		
+		<!-- profile content -->
 		<div class="mid-section" id="profileBox">
 		
 			<img src="" alt="Profile picture" id="profilePic">
@@ -44,6 +56,7 @@
 			<p class="main" id="bio"></p>
 		
 			<h3 class="headers" id="welcomeText">Take a look at their map</h3>
+			<!-- Profile map-->
 			<div id="map">
 			</div>
 
@@ -51,16 +64,30 @@
 		</div>
         <footer>
 			
-            <p> Copyright&copy; bitMap - 2021 - All rights reserved </p>
+            <p>bitMap</p>
             
         </footer>
 	 
 	</div>
-	
+
+	<!--
+	Description: Lightbox image viewing library
+	Author:	Dhakar, L
+	Date: 7 July 2013
+	URL: https://github.com/lokesh/lightbox2
+	-->
 	<script src="lightbox/js/lightbox-plus-jquery.js"></script>
+
     <script src="showProfile.js"></script>
 	<script src="mapLoader.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6E4ampWx9pRu0kZt8RXy6bvzyIgBWp2U&map_ids=2f686051150cc298&libraries=places&callback=initMap"></script>
+
+	<!--
+	Description: Map initialisation
+	Author:	Google Maps
+	Date: 1 March 2023
+	URL: https://developers.google.com/maps/documentation/javascript 
+	-->
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6E4ampWx9pRu0kZt8RXy6bvzyIgBWp2U&map_ids=2f686051150cc298&libraries=places&callback=initMap"></script>
 	
 
 </body>

@@ -14,7 +14,7 @@ $db = new mysqli ('localhost', $user, $pass, $db) or die("unable to connect");
 
 // stores data to be uploaded
 $userID = $_POST["userID"];
-$name = $_POST["name"];
+$name = mysqli_real_escape_string($db,$_POST["name"]);
 $storage = $_POST["storage"];
 $date = $_POST["date"];
 $lat = $_POST["lat"];

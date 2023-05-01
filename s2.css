@@ -139,7 +139,7 @@ form{
     padding-bottom: 20px;
 }
 
-/* Style inputs */
+
 input[type=file], select {
     font-family: Segoe UI Symbol;
     width: 300px;
@@ -163,7 +163,7 @@ input[type=file], select {
     cursor: pointer;
   }
 
-    /* Add a background color to the submit button on mouse-over */
+
  ::-webkit-file-upload-button:hover {
     background: #7684e6;
   }
@@ -229,7 +229,7 @@ input[type=file], select {
   }
 
 
-  /* Style the submit button */
+
   button{
     font-family: Segoe UI Symbol;
     width: 300px;
@@ -250,6 +250,10 @@ input[type=file], select {
     margin: 0;
     margin-right: 20px;
   }
+
+  .filters:hover {
+    background-color: #5363c5;
+  }
   
   .infowindow{
     background-color: #303f9f;
@@ -260,7 +264,7 @@ input[type=file], select {
 
 
 
-  /* Add a background color to the submit button on mouse-over */
+
 button:hover {
     background-color: #5363c5;
   }
@@ -298,19 +302,19 @@ a{
 
 
 
-ul{ /* style top list */
+ul{ 
     margin:0 auto;
     padding:0;
     width:100%;
     }
             
-li{ /* makes all links position in line from left to right */
+li{ 
     display:inline-block;
     margin-right:1px;
     position:relative;
     }
             
-li a{ /* styles text */
+li a{ 
     display:block;
     min-width:70px;
     height:30px;

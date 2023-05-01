@@ -1,3 +1,4 @@
+-- creates tables to store profiles
 CREATE TABLE IF NOT EXISTS `tblProfiles` (
     `UserID` int(11) NOT NULL AUTO_INCREMENT,
     `UserName` varchar(20) DEFAULT NULL,
@@ -8,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `tblProfiles` (
     PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+-- creates table to store photo data
 CREATE TABLE IF NOT EXISTS `tblPhotos` (
     `PhotoID` int(11) NOT NULL AUTO_INCREMENT,
     `UserID` int(11) DEFAULT NULL,

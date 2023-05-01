@@ -11,7 +11,7 @@ $db = new mysqli ('localhost', $user, $pass, $db) or die("unable to connect");
 $name = $_POST['userName'];
 
 
-$query = mysqli_query($db, "SELECT * FROM `tblprofiles` WHERE `UserName` = BINARY '$name'");
+$query = mysqli_query($db, "SELECT UserID, ProfilePicture, Bio  FROM `tblprofiles` WHERE `UserName` = BINARY '$name'");
 
 // stores the query result
 $result = mysqli_fetch_all($query, MYSQLI_ASSOC);

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="eng">
+<!-- bitMaps home page-->
 
 <head>
 
@@ -7,11 +8,23 @@
 	<meta charset="UTF-8">
 	<meta name="description" content="bitMap - view photos around the world." />
     <meta name="keywords" content="bitMap,map,photos,photography,world,earth,view" />
-	<meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Allows responsvie web page -->
-	<link rel="stylesheet" href="s2.css"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="s2.css">
+	<!--
+	Description: Lightbox image viewing library
+	Author:	Dhakar, L
+	Date: 7 July 2013
+	URL: https://github.com/lokesh/lightbox2
+	-->
 	<link rel="stylesheet" href="lightbox/css/lightbox.min.css"> 
+	<!--
+	Description: Cluster manager for map markers
+	Author:	Google Maps
+	Date: 28 september 2021
+	URL: https://github.com/googlemaps/js-markerclusterer
+	-->
 	<script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
-	<!--<script src="mapLoader.js"></script>-->
+
 	
 </head>
 
@@ -19,7 +32,6 @@
 
 	<div id="container">
 	
-		<!-- header -->
 		<header>
 		
 			<h2 class="title"><a href="index.html">bitMap</a></h2>
@@ -38,7 +50,7 @@
 		</header>
 		
 		
-		<!-- main section -->
+		<!-- map section -->
 		<div class="mid-section">
 		
 			<h3 class="headers" id="welcomeText">Welcome to bitMap!</h3>
@@ -51,6 +63,7 @@
 
 		</div>
 
+		<!-- Upload form-->
 		<div class="mid-section" id="uploadBox">
 		
 			<h3 class="headers">Want to upload a photo?</h3>
@@ -76,13 +89,14 @@
 				<button type="submit" name="submit">Submit</button>
 			</form>
 		</div>
-		
-		<!-- footer -->
+	
         <footer>
 			
-            <p class="footerText"> Copyright&copy; bitMap - 2023 - All rights reserved </p>
+            <p class="footerText">bitMap</p>
             
         </footer>
+
+		<!-- Map controls - These are moved inside the map div on page load -->
 		<div id="Divfilters" class="Divfilters">
 			<button class="filters" id="refresh">Refresh Photos</button>
 			<button class="filters" id="suprise">Surpise me!</button>
@@ -92,11 +106,26 @@
 	 
 	</div>
 
+
+<!--
+Description: Lightbox image viewing library
+Author:	Dhakar, L
+Date: 7 July 2013
+URL: https://github.com/lokesh/lightbox2
+-->
 <script src="lightbox/js/lightbox-plus-jquery.js"></script>
+
 <script src="index.js"></script>
 <script src="nameChecker.js"></script>
 <script src="upload.js"></script>
 <script src="mapLoader.js"></script>
+
+<!--
+Description: Map initialisation
+Author:	Google Maps
+Date: 1 March 2023
+URL: https://developers.google.com/maps/documentation/javascript 
+-->
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6E4ampWx9pRu0kZt8RXy6bvzyIgBWp2U&map_ids=2f686051150cc298&libraries=places&callback=initMap"></script>
 
 </body>

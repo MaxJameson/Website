@@ -122,9 +122,7 @@ async function createAccount(){
         sessionStorage.setItem("profilePic", path);
         sessionStorage.setItem("bio", bio);
         sessionStorage.setItem("loggedin", true);
-        document.location.href = "profile.html";
-
-        // !! move to homepage or profile page       
+        document.location.href = "profile.html"; 
 
     }
 
